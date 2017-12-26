@@ -7,6 +7,14 @@ http://www.instructables.com/id/RFID-RC522-Raspberry-Pi/
 Each RFID card contains only 1 data: the userID.
 UOther user data is stored in the main server. RFID cards are only used to identify the costumers.
 
+## Additional Setup
+sudo pip install ConfigParser
+
+## zenibar.cfg
+Encapsulate configuration for the reader : main server URL, reader's ID.
+
+This file is used by ReadCards.py application.
+
 ## WriteCard.py
 _Arguments_:
 - ID of the customer
@@ -20,12 +28,11 @@ will write the code "1234" on the card and exit.
  
 ## ReadCards.py
 _Arguments_:
-- ID of the reader/BeerPump. There may be several beerPumps in the bar, they need to be identified. 
+None
 
 _Usage_: 
 ```shell
-python ReadCards.py 1
+python ReadCards.py
 ``` 
 will read the customer code from the RFID card and send it to the main server.
-The parameter ('1' in this example) is the ID of the reader
  
