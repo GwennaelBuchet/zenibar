@@ -7,6 +7,7 @@
 # https://github.com/mxgxw/MFRC522-python
 # ***
 
+import ConfigParser
 import RPi.GPIO as GPIO
 import signal
 import time
@@ -14,6 +15,22 @@ import time
 import MFRC522
 
 continue_reading = True
+server_url = ""
+reader_id = 0
+
+
+# Read configuration from "zenibar.cfg" file
+def read_config():
+    global server_url, reader_id
+    config = ConfigParser.RawConfigParser()
+    config.read('zenibar.cfg')
+    reader_id = config.get("READER", "ID")
+    server_url = config.get("SERVER", "URL")
+
+
+# Send
+def send_to_server(userID):
+    print("Sending to server " + server_url + " => " + userID)
 
 
 # Capture SIGINT for cleanup when the script is aborted
@@ -27,18 +44,13 @@ def end_read(signal, frame):
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
 
-
-# Send
-def send_to_server(userID):
-    print("Sending to server => " + userID)
-
-
 # Create an object of the class MFRC522
 MIFAREReader = MFRC522.MFRC522()
 
 # Welcome message
 print "Ready to read cards..."
 print "Press Ctrl-C to stop."
+read_config()
 
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
 while continue_reading:
