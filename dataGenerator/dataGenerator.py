@@ -264,5 +264,5 @@ def generateData():
 
 """ Start data generation """
 generateData()
-with open('./uptakes.json', 'w+') as fu:
+with open('./zenibar_history.json', 'w+') as fu:
     fu.write(bar.to_JSON())
