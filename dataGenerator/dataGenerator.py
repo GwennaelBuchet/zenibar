@@ -184,7 +184,7 @@ customers = [
              ["strongness>7", "style in ['IPA','Amber','Belgian Pale Ale','Abbaye']", "color!='Brown'"]),
     Customer(3, "Marcel", "Beliveau", 2017, 4, 27, 2,
              ["strongness<7.5", "style in ['Lager','Belgian Pale Ale']", "color in ['Blond', 'Amber']"]),
-    Customer(4, "Janis", "Joplin", 2017, 4, 12, 9,
+    Customer(4, "Sasha", "Foxxx", 2017, 4, 12, 9,
              ["strongness>7.5", "style in ['IPA', 'Abbaye','Belgian Pale Ale']", "color in ['Blond', 'Amber']"]),
     Customer(5, "Josephine", "Angegardien", 2017, 10, 9, 1,
              ["strongness<9",
@@ -192,7 +192,7 @@ customers = [
     Customer(6, "Homer", "Simpson", 2016, 1, 3, 7,
              ["style in ['Lager']", "color in ['Blond']"]),
     Customer(7, "Apu", "Nahasapeemapetilon", 2016, 6, 24, 2, ["style in ['IPA']"]),
-    Customer(8, "Barney", "Gamble", 2016, 1, 3, 7,
+    Customer(8, "Barney", "Gumble", 2016, 1, 3, 7,
              ["strongness>7",
               "style in ['Abbaye','Belgian Pale Ale', 'Lager', 'IPA']", "color in ['Blond', 'Amber', 'Brown']"])
 ]
