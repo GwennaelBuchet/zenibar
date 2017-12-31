@@ -48,6 +48,7 @@ class Customer:
         self.habits = habits
         # beers that fit the habits/preferences of this customer
         self.suitableBeers = []
+        self.uptakes = []
 
     def _try(o):
         try:
@@ -61,8 +62,6 @@ class Customer:
 
 
 class Uptake:
-    """Une consommation par le client"""
-
     def __init__(self, customerId, beersId):
         self.customerId = customerId
         self.beersId = beersId
@@ -87,6 +86,26 @@ class DailyUptakes:
         self.month = month
         self.day = day
         self.uptakes = []
+
+    def _try(o):
+        try:
+            return o.__dict__
+        except:
+            return str(o)
+
+    def to_JSON(self):
+        return json.dumps(self, default=lambda o: _try(o), sort_keys=True, indent=0, separators=(',', ':')).replace(
+            '\n', '')
+
+
+class CustomerDailyUptakes:
+    """Une consommation par le client"""
+
+    def __init__(self, year, month, day, beersId):
+        self.year = year
+        self.month = month
+        self.day = day
+        self.beersId = beersId
 
     def _try(o):
         try:
@@ -246,7 +265,7 @@ def generateData():
     # pre-compute an average humidity per month to speed-up computation of the weather conditions per day
     averageHumidityPerMonth = []
     for m in range(0, 12):
-        averageHumidityPerMonth.append(math.fabs(math.sin((-6 + m) / 12)) + 0.4) # to get values between 0.4 and 1
+        averageHumidityPerMonth.append(math.fabs(math.sin((-6 + m) / 12)) + 0.4)  # to get values between 0.4 and 1
 
     # fill in each day from the opening of the bar with uptakes
     for singleDate in dateRange(openingday, today):
@@ -256,6 +275,8 @@ def generateData():
             if customer.registrationDate <= singleDate:
                 uptakes = generateUptakesFor1Customer(customer)
                 dailyUptakes.uptakes.append(uptakes)
+                customerUptakes = CustomerDailyUptakes(singleDate.year, singleDate.month, singleDate.day, uptakes.beersId)
+                customer.uptakes.append(customerUptakes)
 
         bar.dailyUptakes.append(dailyUptakes)
 
