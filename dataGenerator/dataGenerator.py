@@ -184,6 +184,8 @@ class Weather:
 ##############################################################################
 """ Init Data """
 
+monthsPonderations = [0.2, 0.3, 0.4, 0.7, 0.8, 0.9, 0.8, 0.3, 0.7, 0.6, 0.7, 0.4]
+
 beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"),
          Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown"),
          Beer(3, "Rochefort", "8", 9.2, "Abbaye", "Brown"),
