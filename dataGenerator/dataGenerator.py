@@ -35,20 +35,26 @@ class Beer:
 class Customer:
     """Un client et son historique"""
 
-    def __init__(self, id, firstname, lastname, registrationyear, registrationmonth, registrationday,
-                 averageUptakesPerDay, habits):
+    def __init__(self, id, firstname, lastname,
+                 registrationyear, registrationmonth, registrationday,
+                 lastvisityear, lastvisitmonth, lastvisitday,
+                 averageUptakesPerDay, habits, ponderationDays):
         self.id = id
         self.firstname = firstname
         self.lastname = lastname
         self.registrationyear = registrationyear
         self.registrationmonth = registrationmonth
         self.registrationday = registrationday
+        self.lastvisityear = lastvisityear
+        self.lastvisitmonth = lastvisitmonth
+        self.lastvisitday = lastvisitday
         self.registrationDate = _dt(registrationyear, registrationmonth, registrationday)
         self.averageUptakesPerDay = averageUptakesPerDay
         self.habits = habits
         # beers that fit the habits/preferences of this customer
         self.suitableBeers = []
         self.uptakes = []
+        self.ponderationDays = ponderationDays
 
     def _try(o):
         try:
@@ -197,23 +203,29 @@ beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"
          ]
 
 customers = [
-    Customer(1, "Adrien", "Legrand", 2016, 11, 2, 8,
-             ["strongness>8", "style in ['IPA','Amber','Belgian Pale Ale']"]),
-    Customer(2, "Gwennael", "Buchet", 2016, 1, 3, 4,
-             ["strongness>7", "style in ['IPA','Amber','Belgian Pale Ale','Abbaye']", "color!='Brown'"]),
-    Customer(3, "Marcel", "Beliveau", 2017, 4, 27, 2,
-             ["strongness<7.5", "style in ['Lager','Belgian Pale Ale']", "color in ['Blond', 'Amber']"]),
-    Customer(4, "Sasha", "Foxxx", 2017, 4, 12, 9,
-             ["strongness>7.5", "style in ['IPA', 'Abbaye','Belgian Pale Ale']", "color in ['Blond', 'Amber']"]),
-    Customer(5, "Josephine", "Angegardien", 2017, 10, 9, 1,
+    Customer(1, "Adrien", "Legrand", 2016, 11, 2, 2018, 1, 23, 8,
+             ["strongness>8", "style in ['IPA','Amber','Belgian Pale Ale']"], [0.2, 0.3, 0.3, 0.4, 0.8, 0.6, 0]),
+    Customer(2, "Gwennael", "Buchet", 2016, 1, 3, 2018, 1, 23, 4,
+             ["strongness>7", "style in ['IPA','Amber','Belgian Pale Ale','Abbaye']", "color!='Brown'"],
+             [0.1, 0.1, 0.4, 0.4, 0, 0.05, 0]),
+    Customer(3, "Marcel", "Beliveau", 2017, 4, 27, 2017, 6, 1, 2,
+             ["strongness<7.5", "style in ['Lager','Belgian Pale Ale']", "color in ['Blond', 'Amber']"],
+             [0, 0, 0, 0, 0.8, 1, 0]),
+    Customer(4, "Sasha", "Foxxx", 2017, 4, 12, 2018, 1, 23, 9,
+             ["strongness>7.5", "style in ['IPA', 'Abbaye','Belgian Pale Ale']", "color in ['Blond', 'Amber']"],
+             [0.5, 0.6, 0.4, 0.4, 0.8, 1, 0]),
+    Customer(5, "Josephine", "Angegardien", 2017, 10, 9, 2017, 12, 21, 1,
              ["strongness<9",
-              "style in ['Abbaye','Belgian Pale Ale', 'Lager']", "color in ['Blond', 'Amber', 'Brown']"]),
-    Customer(6, "Homer", "Simpson", 2016, 1, 3, 7,
-             ["style in ['Lager']", "color in ['Blond']"]),
-    Customer(7, "Apu", "Nahasapeemapetilon", 2016, 6, 24, 2, ["style in ['IPA']"]),
-    Customer(8, "Barney", "Gumble", 2016, 1, 3, 7,
+              "style in ['Abbaye','Belgian Pale Ale', 'Lager']", "color in ['Blond', 'Amber', 'Brown']"],
+             [0.1, 0.1, 0.4, 0.4, 0, 0.05, 0]),
+    Customer(6, "Homer", "Simpson", 2016, 1, 3, 2018, 1, 10, 7,
+             ["style in ['Lager']", "color in ['Blond']"], [0.6, 0.6, 0.7, 0.8, 0.9, 1, 0]),
+    Customer(7, "Apu", "Nahasapeemapetilon", 2016, 6, 24, 2017, 11, 10, 2, ["style in ['IPA']"],
+             [0.0, 0.0, 0.2, 0.2, 0.3, 0.3, 0]),
+    Customer(8, "Barney", "Gumble", 2016, 1, 3, 2018, 1, 23, 7,
              ["strongness>7",
-              "style in ['Abbaye','Belgian Pale Ale', 'Lager', 'IPA']", "color in ['Blond', 'Amber', 'Brown']"])
+              "style in ['Abbaye','Belgian Pale Ale', 'Lager', 'IPA']", "color in ['Blond', 'Amber', 'Brown']"],
+             [0.9, 0.9, 0.8, 0.6, 1, 1, 0])
 ]
 
 bar = Bar(beers, customers)
@@ -275,7 +287,8 @@ def generateData():
             if customer.registrationDate <= singleDate:
                 uptakes = generateUptakesFor1Customer(customer)
                 dailyUptakes.uptakes.append(uptakes)
-                customerUptakes = CustomerDailyUptakes(singleDate.year, singleDate.month, singleDate.day, uptakes.beersId)
+                customerUptakes = CustomerDailyUptakes(singleDate.year, singleDate.month, singleDate.day,
+                                                       uptakes.beersId)
                 customer.uptakes.append(customerUptakes)
 
         bar.dailyUptakes.append(dailyUptakes)
