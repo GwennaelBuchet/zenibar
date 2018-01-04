@@ -45,10 +45,11 @@ class Customer:
         self.registrationyear = registrationyear
         self.registrationmonth = registrationmonth
         self.registrationday = registrationday
+        self.registrationDate = _dt(registrationyear, registrationmonth, registrationday)
         self.lastvisityear = lastvisityear
         self.lastvisitmonth = lastvisitmonth
         self.lastvisitday = lastvisitday
-        self.registrationDate = _dt(registrationyear, registrationmonth, registrationday)
+        self.lastvisitDate = _dt(lastvisityear, lastvisitmonth, lastvisitday)
         self.averageUptakesPerDay = averageUptakesPerDay
         self.habits = habits
         # beers that fit the habits/preferences of this customer
@@ -208,7 +209,7 @@ customers = [
     Customer(2, "Gwennael", "Buchet", 2016, 1, 3, 2018, 1, 23, 4,
              ["strongness>7", "style in ['IPA','Amber','Belgian Pale Ale','Abbaye']", "color!='Brown'"],
              [0.1, 0.1, 0.4, 0.4, 0, 0.05, 0]),
-    Customer(3, "Marcel", "Beliveau", 2017, 4, 27, 2017, 6, 1, 2,
+    Customer(3, "Marcel", "Beliveau", 2017, 1, 27, 2017, 6, 1, 2,
              ["strongness<7.5", "style in ['Lager','Belgian Pale Ale']", "color in ['Blond', 'Amber']"],
              [0, 0, 0, 0, 0.8, 1, 0]),
     Customer(4, "Sasha", "Foxxx", 2017, 4, 12, 2018, 1, 23, 9,
@@ -284,7 +285,7 @@ def generateData():
         weather = generateWeather(singleDate, averageHumidityPerMonth)
         dailyUptakes = DailyUptakes(weather, singleDate.year, singleDate.month, singleDate.day)
         for customer in bar.customers:
-            if customer.registrationDate <= singleDate:
+            if customer.registrationDate <= singleDate and customer.lastvisitDate >= singleDate:
                 uptakes = generateUptakesFor1Customer(customer)
                 dailyUptakes.uptakes.append(uptakes)
                 customerUptakes = CustomerDailyUptakes(singleDate.year, singleDate.month, singleDate.day,
