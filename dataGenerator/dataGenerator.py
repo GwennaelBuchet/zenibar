@@ -36,20 +36,20 @@ class Customer:
     """Un client et son historique"""
 
     def __init__(self, id, firstname, lastname,
-                 registrationyear, registrationmonth, registrationday,
-                 lastvisityear, lastvisitmonth, lastvisitday,
+                 registrationYear, registrationMonth, registrationDay,
+                 lastvisitYear, lastvisitMonth, lastvisitDay,
                  averageUptakesPerDay, habits, ponderationDays):
         self.id = id
         self.firstname = firstname
         self.lastname = lastname
-        self.registrationyear = registrationyear
-        self.registrationmonth = registrationmonth
-        self.registrationday = registrationday
-        self.registrationDate = _dt(registrationyear, registrationmonth, registrationday)
-        self.lastvisityear = lastvisityear
-        self.lastvisitmonth = lastvisitmonth
-        self.lastvisitday = lastvisitday
-        self.lastvisitDate = _dt(lastvisityear, lastvisitmonth, lastvisitday)
+        self.registrationYear = registrationYear
+        self.registrationMonth = registrationMonth
+        self.registrationDay = registrationDay
+        self.registrationDate = _dt(registrationYear, registrationMonth, registrationDay)
+        self.lastvisitYear = lastvisitYear
+        self.lastvisitMonth = lastvisitMonth
+        self.lastvisitDay = lastvisitDay
+        self.lastvisitDate = _dt(lastvisitYear, lastvisitMonth, lastvisitDay)
         self.averageUptakesPerDay = averageUptakesPerDay
         self.habits = habits
         # beers that fit the habits/preferences of this customer
