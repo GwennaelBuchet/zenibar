@@ -55,6 +55,7 @@ class Customer:
         # beers that fit the habits/preferences of this customer
         self.suitableBeers = []
         self.uptakes = []
+        # ponderationDays correspond tho the percents of chance the customer will go to the bar for each day of the week
         self.ponderationDays = ponderationDays
 
     def _try(o):
@@ -184,7 +185,9 @@ class Weather:
 ##############################################################################
 """ Init Data """
 
-monthsPonderations = [0.2, 0.3, 0.4, 0.7, 0.8, 0.9, 0.8, 0.3, 0.7, 0.6, 0.7, 0.4]
+# The bar got more or less customers depending on the month.
+# This ponderations are betwwen 0 and 1 and correspond to the percent of chance people comes to the bar
+monthPonderations = [0.2, 0.3, 0.4, 0.7, 0.8, 0.9, 0.8, 0.3, 0.7, 0.6, 0.7, 0.4]
 
 beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"),
          Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown"),
@@ -236,7 +239,7 @@ bar = Bar(beers, customers)
 
 ##############################################################################
 
-def generateUptakesFor1Customer(customer):
+def generateUptakesFor1Customer(customer, weather, year, month, day):
     """ Generates all the uptakes of a customer, based on its habits """
 
     # generates a random number of uptakes, based on the user habits
@@ -245,6 +248,10 @@ def generateUptakesFor1Customer(customer):
 
     if nbSuitableBeers == 0:
         return None
+
+    # todo :
+    #   - compute an average ponderation from customers (days) and monthPonderations + a random threshold
+    #   - use weather data to ponderate the ponderation
 
     beers = []
 
@@ -288,11 +295,13 @@ def generateData():
         dailyUptakes = DailyUptakes(weather, singleDate.year, singleDate.month, singleDate.day)
         for customer in bar.customers:
             if customer.registrationDate <= singleDate and customer.lastvisitDate >= singleDate:
-                uptakes = generateUptakesFor1Customer(customer)
-                dailyUptakes.uptakes.append(uptakes)
-                customerUptakes = CustomerDailyUptakes(singleDate.year, singleDate.month, singleDate.day,
-                                                       uptakes.beersId)
-                customer.uptakes.append(customerUptakes)
+                uptakes = generateUptakesFor1Customer(customer, weather, singleDate.year, singleDate.month,
+                                                      singleDate.day)
+                if uptakes != None:
+                    dailyUptakes.uptakes.append(uptakes)
+                    customerUptakes = CustomerDailyUptakes(singleDate.year, singleDate.month, singleDate.day,
+                                                           uptakes.beersId)
+                    customer.uptakes.append(customerUptakes)
 
         bar.dailyUptakes.append(dailyUptakes)
 
