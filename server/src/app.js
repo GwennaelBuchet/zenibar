@@ -17,7 +17,7 @@ app.use(express.static('./public/'));
 app.use(express.static('./node_modules/'));
 
 app.get('/', function (req, res) {
-    res.sendfile("public/bar/index.html");
+    res.sendfile("public/index.html");
 });
 
 
