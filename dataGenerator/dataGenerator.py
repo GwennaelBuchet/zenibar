@@ -288,15 +288,19 @@ def lastDay():
 
     return snowCampDay
 
+def generateMonthsHumidity():
+    averageHumidityPerMonth = []
+    for m in range(0, 12):
+        averageHumidityPerMonth.append(math.fabs(math.sin((-6 + m) / 12)) + 0.4)  # to get values between 0.4 and 1
+
+    return averageHumidityPerMonth
 
 def generateData():
     openingDay = _dt(2016, 1, 1)
     endDay = lastDay()
 
     # pre-compute an average humidity per month to speed-up computation of the weather conditions per day
-    averageHumidityPerMonth = []
-    for m in range(0, 12):
-        averageHumidityPerMonth.append(math.fabs(math.sin((-6 + m) / 12)) + 0.4)  # to get values between 0.4 and 1
+    averageHumidityPerMonth = generateMonthsHumidity()
 
     # fill in each day from the opening of the bar with uptakes
     for singleDate in dateRange(openingDay, endDay):
