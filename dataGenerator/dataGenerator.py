@@ -281,7 +281,7 @@ def dateRange(start_date, end_date):
 
 
 def generateData():
-    today = _dt.now()
+    today = _dt(2018, 1, 24) # _dt.now()
     openingday = _dt(2016, 1, 1)
 
     # pre-compute an average humidity per month to speed-up computation of the weather conditions per day
