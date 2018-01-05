@@ -88,11 +88,11 @@ class Uptake:
 class DailyUptakes:
     """History of uptakes for 1 day"""
 
-    def __init__(self, weather, year, month, day):
+    def __init__(self, weather, singleDateTime):
         self.weather = weather
-        self.year = year
-        self.month = month
-        self.day = day
+        self.year = singleDateTime.year
+        self.month = singleDateTime.month
+        self.day = singleDateTime.day
         self.uptakes = []
 
     def _try(o):
@@ -109,10 +109,10 @@ class DailyUptakes:
 class CustomerDailyUptakes:
     """Une consommation par le client"""
 
-    def __init__(self, year, month, day, beersId):
-        self.year = year
-        self.month = month
-        self.day = day
+    def __init__(self, singleDateTime, beersId):
+        self.year = singleDateTime.year
+        self.month = singleDateTime.month
+        self.day = singleDateTime.day
         self.beersId = beersId
 
     def _try(o):
@@ -187,7 +187,7 @@ class Weather:
 
 # The bar got more or less customers depending on the month.
 # This ponderations are betwwen 0 and 1 and correspond to the percent of chance people comes to the bar
-monthPonderations = [0.2, 0.3, 0.4, 0.7, 0.8, 0.9, 0.8, 0.3, 0.7, 0.6, 0.7, 0.4]
+monthPonderations = [0.5, 0.6, 0.6, 0.9, 1, 1, 0.9, 0.5, 1, 1, 1, 0.5]
 
 beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"),
          Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown"),
@@ -213,7 +213,7 @@ customers = [
              ["strongness>8", "style in ['IPA','Amber','Belgian Pale Ale']"], [0.2, 0.3, 0.3, 0.4, 0.8, 0.6, 0]),
     Customer(2, "Gwennael", "Buchet", 2016, 1, 3, 2018, 1, 23, 4,
              ["strongness>7", "style in ['IPA','Amber','Belgian Pale Ale','Abbaye']", "color!='Brown'"],
-             [0.1, 0.1, 0.4, 0.4, 0, 0.05, 0]),
+             [0.0, 0.1, 0.4, 0.4, 0, 0.05, 0]),
     Customer(3, "Marcel", "Beliveau", 2017, 1, 27, 2017, 6, 1, 2,
              ["strongness<7.5", "style in ['Lager','Belgian Pale Ale']", "color in ['Blond', 'Amber']"],
              [0, 0, 0, 0, 0.8, 1, 0]),
@@ -223,7 +223,7 @@ customers = [
     Customer(5, "Josephine", "Angegardien", 2017, 10, 9, 2017, 12, 21, 1,
              ["strongness<9",
               "style in ['Abbaye','Belgian Pale Ale', 'Lager']", "color in ['Blond', 'Amber', 'Brown']"],
-             [0.1, 0.1, 0.4, 0.4, 0, 0.05, 0]),
+             [0.0, 0.0, 0.2, 0.4, 0, 0.5, 0]),
     Customer(6, "Homer", "Simpson", 2016, 1, 3, 2018, 1, 10, 7,
              ["style in ['Lager']", "color in ['Blond']"], [0.6, 0.6, 0.7, 0.8, 0.9, 1, 0]),
     Customer(7, "Apu", "Nahasapeemapetilon", 2016, 6, 24, 2017, 11, 10, 2, ["style in ['IPA']"],
@@ -239,7 +239,25 @@ bar = Bar(beers, customers)
 
 ##############################################################################
 
-def generateUptakesFor1Customer(customer, weather, year, month, day):
+def getTempetatureFactor(temperature):
+    if temperature < 5:
+        return 0.8
+    if temperature > 22:
+        return 2 - (22 / temperature)
+
+    return 1
+
+
+def getHumidityFactor(humidity):
+    if humidity < 0.7:
+        return 1.2
+    if humidity > 0.9:
+        return 0.7
+
+    return 1
+
+
+def generateUptakesFor1Customer(customer, weather, singleDateTime):
     """ Generates all the uptakes of a customer, based on its habits """
 
     # generates a random number of uptakes, based on the user habits
@@ -249,9 +267,27 @@ def generateUptakesFor1Customer(customer, weather, year, month, day):
     if nbSuitableBeers == 0:
         return None
 
-    # todo :
-    #   - compute an average ponderation from customers (days) and monthPonderations + a random threshold
-    #   - use weather data to ponderate the ponderation
+    # dayPonderation = percent of chance the customer goes to the bar today
+    dayPonderation = customer.ponderationDays[
+        singleDateTime.weekday()]  # get standard ponderation for this customer for today
+    dayPonderation += (
+            -0.2 + math.ceil(random.random() * 0.4))  # let's add some random to our ponderation, between -0.2 and + 0.2
+    dayPonderation = max(0, min(1, dayPonderation))  # just to ensure to get in [0, 1] only
+
+    chancesHeWillComeToday = dayPonderation
+
+    # moderate ponderation with usual frequentation of the bar in this period
+    chancesHeWillComeToday *= monthPonderations[singleDateTime.month - 1]
+
+    # moderate ponderation with weather
+    chancesHeWillComeToday *= getTempetatureFactor(weather.temperature)
+    chancesHeWillComeToday *= getHumidityFactor(weather.humidity)
+
+    # random=[0.0, 1.0], so it's convenient to compare with chances the customer will come today
+    customerComesToday = random.random() < chancesHeWillComeToday
+
+    if not customerComesToday:
+        return None
 
     beers = []
 
@@ -264,9 +300,9 @@ def generateUptakesFor1Customer(customer, weather, year, month, day):
     return Uptake(customer.id, beers)
 
 
-def generateWeather(singleDate, averageHumidityPerMonth):
+def generateWeather(singleDateTime, averageHumidityPerMonth):
     """ Generates aweather condition, based on the date """
-    currentAverage = averageHumidityPerMonth[singleDate.month - 1]
+    currentAverage = averageHumidityPerMonth[singleDateTime.month - 1]
     r = random.random()
 
     h = currentAverage + (r / 10)
@@ -279,6 +315,7 @@ def dateRange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + _td(n)
 
+
 def lastDay():
     today = _dt.now()
     snowCampDay = _dt(2018, 1, 25)
@@ -288,12 +325,14 @@ def lastDay():
 
     return snowCampDay
 
+
 def generateMonthsHumidity():
     averageHumidityPerMonth = []
     for m in range(0, 12):
         averageHumidityPerMonth.append(math.fabs(math.sin((-6 + m) / 12)) + 0.4)  # to get values between 0.4 and 1
 
     return averageHumidityPerMonth
+
 
 def generateData():
     openingDay = _dt(2016, 1, 1)
@@ -303,17 +342,15 @@ def generateData():
     averageHumidityPerMonth = generateMonthsHumidity()
 
     # fill in each day from the opening of the bar with uptakes
-    for singleDate in dateRange(openingDay, endDay):
-        weather = generateWeather(singleDate, averageHumidityPerMonth)
-        dailyUptakes = DailyUptakes(weather, singleDate.year, singleDate.month, singleDate.day)
+    for singleDateTime in dateRange(openingDay, endDay):
+        weather = generateWeather(singleDateTime, averageHumidityPerMonth)
+        dailyUptakes = DailyUptakes(weather, singleDateTime)
         for customer in bar.customers:
-            if customer.registrationDate <= singleDate and customer.lastvisitDate >= singleDate:
-                uptakes = generateUptakesFor1Customer(customer, weather, singleDate.year, singleDate.month,
-                                                      singleDate.day)
+            if customer.registrationDate <= singleDateTime and customer.lastvisitDate >= singleDateTime:
+                uptakes = generateUptakesFor1Customer(customer, weather, singleDateTime)
                 if uptakes != None:
                     dailyUptakes.uptakes.append(uptakes)
-                    customerUptakes = CustomerDailyUptakes(singleDate.year, singleDate.month, singleDate.day,
-                                                           uptakes.beersId)
+                    customerUptakes = CustomerDailyUptakes(singleDateTime, uptakes.beersId)
                     customer.uptakes.append(customerUptakes)
 
         bar.dailyUptakes.append(dailyUptakes)
