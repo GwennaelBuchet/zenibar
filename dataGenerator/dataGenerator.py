@@ -279,10 +279,19 @@ def dateRange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + _td(n)
 
+def lastDay():
+    today = _dt.now()
+    snowCampDay = _dt(2018, 1, 25)
+
+    if snowCampDay < today:
+        return today
+
+    return snowCampDay
+
 
 def generateData():
-    today = _dt(2018, 1, 24) # _dt.now()
-    openingday = _dt(2016, 1, 1)
+    openingDay = _dt(2016, 1, 1)
+    endDay = lastDay()
 
     # pre-compute an average humidity per month to speed-up computation of the weather conditions per day
     averageHumidityPerMonth = []
@@ -290,7 +299,7 @@ def generateData():
         averageHumidityPerMonth.append(math.fabs(math.sin((-6 + m) / 12)) + 0.4)  # to get values between 0.4 and 1
 
     # fill in each day from the opening of the bar with uptakes
-    for singleDate in dateRange(openingday, today):
+    for singleDate in dateRange(openingDay, endDay):
         weather = generateWeather(singleDate, averageHumidityPerMonth)
         dailyUptakes = DailyUptakes(weather, singleDate.year, singleDate.month, singleDate.day)
         for customer in bar.customers:
