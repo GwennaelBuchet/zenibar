@@ -4,10 +4,11 @@ let express = require('express');
 let app = express();
 let http = require('http').Server(app);
 let ws = require("nodejs-websocket");
+let fetch = require('node-fetch');
 
-// Bar data, with history, beers and costumers
-let bar = require("./../data/zenibar_history.json");
+let MAINSERVER_IP = "http://127.0.0.1:8090";
 
+let customer = null;
 
 let bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -17,39 +18,42 @@ app.use(express.static('./public/'));
 app.use(express.static('./node_modules/'));
 
 app.get('/', function (req, res) {
-    res.sendfile("public/bar/index.html");
+    res.sendfile("public/index.html");
 });
 
-
-/**
- * Get a list of JSON for all registered drinkers
- * @path /customers
- * @HTTPMethod GET
- * @returns {string}
- */
-app.get("/customers", function (req, res) {
-    res.send(bar.customers);
-});
-
-app.get("/customers/:id", function (req, res) {
-    let id = req.params.id;
-    for (let customer of bar.customers) {
-        if (customer["id"] == id) {
-            res.send(customer);
-            break;
-        }
+function status(response) {
+    if (response.status >= 200 && response.status < 300) {
+        return Promise.resolve(response)
+    } else {
+        return Promise.reject(new Error(response.statusText))
     }
+}
+
+function json(response) {
+    return response.json()
+}
+
+
+app.get("/connect/:id", function (req, res) {
+    let id = req.params.id;
+
+    fetch(MAINSERVER_IP + "/customers/" + id, {mode: 'cors'})
+        .then(status)
+        .then(json)
+        .then(function(data) {
+            customer = data;
+        }).catch(function(error) {
+        console.log('Request failed', error);
+    });
+
 });
 
-app.get("/beers", function (req, res) {
-    res.send(bar.beers);
-});
 
 /**
  * Server itself
  * @type {http.Server}
  */
-let server = app.listen(8092², function () {
+let server = app.listen(8092, function () {
     //print few information about the server
     let host = server.address().address;
     let port = server.address().port;
