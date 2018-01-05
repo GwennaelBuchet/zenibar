@@ -34,14 +34,15 @@ function json(response) {
 }
 
 
-app.get("/connect/:id", function (req, res) {
-    let id = req.params.id;
+app.post("/connect", function (req, res) {
+    let id = req.body.id;
 
     fetch(MAINSERVER_IP + "/customers/" + id, {mode: 'cors'})
         .then(status)
         .then(json)
         .then(function(data) {
             customer = data;
+            console.log(customer)
         }).catch(function(error) {
         console.log('Request failed', error);
     });
