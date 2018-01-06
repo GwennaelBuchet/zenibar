@@ -198,14 +198,24 @@ beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"
          Beer(7, "Brewdog", "Punk IPA", 5.6, "IPA", "Blond"),
          Beer(8, "Westmalle", "Triple", 9.5, "Abbaye", "Blond"),
          Beer(9, "Rince Cochon", "Blonde", 8.5, "Belgian Pale Ale", "Blond"),
-         Beer(10, "Hinano", "Hinano", 5, "Lager", "Blond"),
+         Beer(10, "Hinano", "", 5, "Lager", "Blond"),
          Beer(11, "La Levrette", "Blonde", 5, "Lager", "Blond"),
          Beer(12, "La Fée Torchette", "Blonde", 6.5, "Lager", "Blond"),
          Beer(13, "La Trappe", "Quadrupel", 10, "Belgian Pale Ale", "Amber"),
          Beer(14, "Kwak", "", 8.4, "Belgian Pale Ale", "Amber"),
-         Beer(15, "Tripel Karmeliet", "Triple", 8.4, "Belgian Pale Ale", "Blond"),
+         Beer(15, "Tripel Karmeliet", "", 8.4, "Belgian Pale Ale", "Blond"),
          Beer(16, "Omnipollo", "Omnipollo Fatamorgana", 8, "IPA", "Amber"),
-         Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond")
+         Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond"),
+         Beer(18, "Iron Maiden", "Trooper", 4.7, "Extra Special Bitter", "Blond"),
+         Beer(18, "Gulden", "Drak", 10.7, "Belgian Dark Ale", "Brown"),
+         Beer(19, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond"),
+         Beer(20, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown"),
+         Beer(21, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond"),
+         Beer(22, "Pietra", "", 6, "Lager", "Blond"),
+         Beer(23, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond"),
+         Beer(24, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond"),
+         Beer(25, "Blue Moon", "White Ale", 5.4, "White", "White"),
+         Beer(26, "Rousse du Mont Blanc", "W", 6.5, "AMber", "Amber")
          ]
 
 customers = [
