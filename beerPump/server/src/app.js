@@ -44,7 +44,9 @@ app.post("/connect", function (req, res) {
         .then(json)
         .then(function(data) {
             customer = data;
-            //console.log(customer)
+            serverws.connections.forEach(function (conn) {
+                conn.sendText(JSON.stringify(customer));
+            })
         }).catch(function(error) {
         console.log('Request failed', error);
     });
