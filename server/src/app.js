@@ -20,6 +20,11 @@ app.get('/', function (req, res) {
     res.sendfile("public/index.html");
 });
 
+app.get('/pictures/:file', function (req, res) {
+    let file = req.params.file;
+    res.sendFile('data/pictures/' + file, { root: __dirname + "/../" });
+});
+
 
 /**
  * Get a list of JSON for all registered drinkers
