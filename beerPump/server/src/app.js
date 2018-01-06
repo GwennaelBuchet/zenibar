@@ -6,7 +6,7 @@ let http = require('http').Server(app);
 let ws = require("nodejs-websocket");
 let fetch = require('node-fetch');
 
-let MAINSERVER_IP = "http://127.0.0.1:8090";
+let MAINSERVER_IP = "http://192.168.43.97:8090";
 
 let customer = null;
 
@@ -37,12 +37,14 @@ function json(response) {
 app.post("/connect", function (req, res) {
     let id = req.body.id;
 
+    console.log("Receive connection for customer with id:" + id);
+
     fetch(MAINSERVER_IP + "/customers/" + id, {mode: 'cors'})
         .then(status)
         .then(json)
         .then(function(data) {
             customer = data;
-            console.log(customer)
+            //console.log(customer)
         }).catch(function(error) {
         console.log('Request failed', error);
     });
