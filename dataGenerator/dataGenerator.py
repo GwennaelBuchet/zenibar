@@ -215,7 +215,7 @@ beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"
          Beer(23, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond"),
          Beer(24, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond"),
          Beer(25, "Blue Moon", "White Ale", 5.4, "White", "White"),
-         Beer(26, "Rousse du Mont Blanc", "W", 6.5, "AMber", "Amber")
+         Beer(26, "Rousse du Mont Blanc", "W", 6.5, "Amber", "Amber")
          ]
 
 customers = [
