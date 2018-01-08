@@ -20,9 +20,10 @@ app.get('/', function (req, res) {
     res.sendfile("public/index.html");
 });
 
-app.get('/pictures/:file', function (req, res) {
+app.get('/pictures/:folder/:file', function (req, res) {
     let file = req.params.file;
-    res.sendFile('data/pictures/' + file, { root: __dirname + "/../" });
+    let folder = req.params.folder;
+    res.sendFile('data/pictures/' + folder + "/" + file, {root: __dirname + "/../"});
 });
 
 
