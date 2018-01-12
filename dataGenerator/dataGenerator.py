@@ -80,13 +80,17 @@ class Customer:
 
     @staticmethod
     def generateFirstDate():
-        delta = _td(math.ceil(random.random() * 200))
+        delta = _td(math.ceil(random.random() * 60))
         return OPENING_DATE + delta
 
     @staticmethod
     def generateLastDate():
         delta = _td(math.ceil(random.random() * 30))
         return LAST_DATE - delta
+
+    @staticmethod
+    def generateAverageUptakes():
+        return 1 + math.ceil(random.random() * 5)
 
     @staticmethod
     def generatePonderations():
@@ -211,11 +215,16 @@ class Bar:
         self.dailyUptakes = []
         self.beers = beers
         self.customers = []
+        self.nbTotalUptakes = 0
         for customer in customers:
             self.addCustomer(customer)
 
     def addCustomer(self, customer):
         self.addSuitableBeersToCustomer(customer)
+        while len(customer.suitableBeers) == 0:
+            customer.habits = Customer.generateHabits()
+            self.addSuitableBeersToCustomer(customer)
+
         self.customers.append(customer)
 
     def addBeer(self, beer):
@@ -262,128 +271,60 @@ class Weather:
             '\n', '')
 
 
-##############################################################################
-""" Init Data """
-
-# The bar got more or less customers depending on the month.
-# This ponderations are betwwen 0 and 1 and correspond to the percent of chance people comes to the bar
-
-
-beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"),
-         Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown"),
-         Beer(3, "Rochefort", "8", 9.2, "Abbaye", "Brown"),
-         Beer(4, "Saint Bernardus", "Abt 12", 10, "Belgian Pale Ale", "Brown"),
-         Beer(5, "Cuvée des Trolls", "Blonde", 7, "Belgian Pale Ale", "Blond"),
-         Beer(6, "Orval", "Blonde", 7, "Abbaye", "Amber"),
-         Beer(7, "Brewdog", "Punk IPA", 5.6, "IPA", "Blond"),
-         Beer(8, "Westmalle", "Triple", 9.5, "Abbaye", "Blond"),
-         Beer(9, "Rince Cochon", "Blonde", 8.5, "Belgian Pale Ale", "Blond"),
-         Beer(10, "Hinano", "", 5, "Lager", "Blond"),
-         Beer(11, "La Levrette", "Blonde", 5, "Lager", "Blond"),
-         Beer(12, "La Fée Torchette", "Blonde", 6.5, "Lager", "Blond"),
-         Beer(13, "La Trappe", "Quadrupel", 10, "Belgian Pale Ale", "Amber"),
-         Beer(14, "Kwak", "", 8.4, "Belgian Pale Ale", "Amber"),
-         Beer(15, "Tripel Karmeliet", "", 8.4, "Belgian Pale Ale", "Blond"),
-         Beer(16, "Omnipollo", "Omnipollo Fatamorgana", 8, "IPA", "Amber"),
-         Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond"),
-         Beer(18, "Iron Maiden", "Trooper", 4.7, "Extra Special Bitter", "Blond"),
-         Beer(18, "Gulden", "Drak", 10.7, "Belgian Dark Ale", "Brown"),
-         Beer(19, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond"),
-         Beer(20, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown"),
-         Beer(21, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond"),
-         Beer(22, "Pietra", "", 6, "Lager", "Blond"),
-         Beer(23, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond"),
-         Beer(24, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond"),
-         Beer(25, "Blue Moon", "White Ale", 5.4, "White", "White"),
-         Beer(26, "Rousse du Mont Blanc", "W", 6.5, "Amber", "Amber")
-         ]
+def generateBeers():
+    beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"),
+             Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown"),
+             Beer(3, "Rochefort", "8", 9.2, "Abbaye", "Brown"),
+             Beer(4, "Saint Bernardus", "Abt 12", 10, "Belgian Pale Ale", "Brown"),
+             Beer(5, "Cuvée des Trolls", "Blonde", 7, "Belgian Pale Ale", "Blond"),
+             Beer(6, "Orval", "Blonde", 7, "Abbaye", "Amber"),
+             Beer(7, "Brewdog", "Punk IPA", 5.6, "IPA", "Blond"),
+             Beer(8, "Westmalle", "Triple", 9.5, "Abbaye", "Blond"),
+             Beer(9, "Rince Cochon", "Blonde", 8.5, "Belgian Pale Ale", "Blond"),
+             Beer(10, "Hinano", "", 5, "Lager", "Blond"),
+             Beer(11, "La Levrette", "Blonde", 5, "Lager", "Blond"),
+             Beer(12, "La Fée Torchette", "Blonde", 6.5, "Lager", "Blond"),
+             Beer(13, "La Trappe", "Quadrupel", 10, "Belgian Pale Ale", "Amber"),
+             Beer(14, "Kwak", "", 8.4, "Belgian Pale Ale", "Amber"),
+             Beer(15, "Tripel Karmeliet", "", 8.4, "Belgian Pale Ale", "Blond"),
+             Beer(16, "Omnipollo", "Omnipollo Fatamorgana", 8, "IPA", "Amber"),
+             Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond"),
+             Beer(18, "Iron Maiden", "Trooper", 4.7, "Extra Special Bitter", "Blond"),
+             Beer(18, "Gulden", "Drak", 10.7, "Belgian Dark Ale", "Brown"),
+             Beer(19, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond"),
+             Beer(20, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown"),
+             Beer(21, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond"),
+             Beer(22, "Pietra", "", 6, "Lager", "Blond"),
+             Beer(23, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond"),
+             Beer(24, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond"),
+             Beer(25, "Blue Moon", "White Ale", 5.4, "White", "White"),
+             Beer(26, "Rousse du Mont Blanc", "W", 6.5, "Amber", "Amber")
+             ]
+    return beers
 
 
 def generateCustomers():
-    for i in range(1, NB_CUSTOMERS):
+    customers = []
+    for i in range(0, NB_CUSTOMERS):
         name = Customer.generateName(i)
         firstDate = Customer.generateFirstDate()
         lastDate = Customer.generateLastDate()
-        nbBeers = 1 + math.ceil(random.random() * 7)
+        averageUptakesPerDay = Customer.generateAverageUptakes()
         habits = Customer.generateHabits()
+
         ponderationDays = Customer.generatePonderations()
 
         customers.append(
-            Customer(i, name[0], name[1], firstDate, lastDate, nbBeers, habits, ponderationDays)
+            Customer(i, name[0], name[1], firstDate, lastDate, averageUptakesPerDay, habits, ponderationDays)
         )
+    return customers
 
-
-customers = [
-    # Customer(1, "Adrien", "Legrand", 2016, 11, 2, 2018, 1, 23, 8,
-    #          ["strongness>8", "style in ['IPA','Amber','Belgian Pale Ale']"], [0.2, 0.3, 0.3, 0.4, 0.8, 0.6, 0]),
-    # Customer(2, "Gwennael", "Buchet", 2016, 1, 3, 2018, 1, 23, 4,
-    #          ["strongness>7", "style in ['IPA','Amber','Belgian Pale Ale','Abbaye']", "color!='Brown'"],
-    #          [0.0, 0.1, 0.4, 0.4, 0, 0.05, 0]),
-    # Customer(3, "Marcel", "Beliveau", 2017, 1, 27, 2017, 6, 1, 2,
-    #          ["strongness<7.5", "style in ['Lager','Belgian Pale Ale', 'White', 'Alcool Free']",
-    #           "color in ['White', 'Blond', 'Amber']"],
-    #          [0, 0, 0, 0, 0.8, 1, 0]),
-    # Customer(4, "Sasha", "Foxxx", 2017, 4, 12, 2018, 1, 23, 9,
-    #          ["strongness>7.5", "style in ['IPA', 'Abbaye','Belgian Pale Ale']", "color in ['Blond', 'Amber']"],
-    #          [0.5, 0.6, 0.4, 0.4, 0.8, 1, 0]),
-    # Customer(5, "Jenna", "Haze", 2017, 10, 9, 2017, 12, 21, 1,
-    #          ["strongness<9",
-    #           "style in ['Abbaye','Belgian Pale Ale', 'Lager', 'White']",
-    #           "color in ['White', 'Blond', 'Amber', 'Brown']"],
-    #          [0.0, 0.0, 0.2, 0.4, 0, 0.5, 0]),
-    # Customer(6, "Riley", "Reid", 2016, 1, 3, 2018, 1, 10, 7,
-    #          ["style in ['Lager']", "color in ['Blond']"], [0.6, 0.6, 0.7, 0.8, 0.9, 1, 0]),
-    # Customer(7, "Kobe", "Tai", 2016, 6, 24, 2017, 11, 10, 2, ["style in ['IPA', 'Belgian Dark Ale']"],
-    #          [0.0, 0.0, 0.2, 0.2, 0.3, 0.3, 0]),
-    # Customer(8, "Daisie", "Marie", 2016, 1, 3, 2018, 1, 23, 2,
-    #          ["strongness>7",
-    #           "style in ['Abbaye','Belgian Pale Ale', 'Lager', 'IPA']", "color in ['Blond', 'Amber', 'Brown']"],
-    #          [0.9, 0.9, 0.8, 0.6, 1, 1, 0]),
-    # Customer(9, "Lisa", "Ann", 2016, 1, 23, 2018, 1, 23, 3,
-    #          ["strongness>7",
-    #           "style in ['Abbaye', 'Belgian Pale Ale', 'Lager']", "color in ['Blond', 'Amber']"],
-    #          [0, 0.2, 0.2, 0.6, 0.8, 0.8, 0]),
-    # Customer(10, "Tori", "Black", 2016, 5, 13, 2018, 1, 23, 4,
-    #          ["strongness<9",
-    #           "style in ['Abbaye','Belgian Pale Ale', 'Belgian Dark Ale', 'IPA']",
-    #           "color in ['Amber', 'Brown', 'Black']"],
-    #          [0.2, 0.2, 0, 0, 0, 1, 0]),
-    # Customer(11, "Janice", "Griffith", 2016, 5, 13, 2018, 1, 23, 3,
-    #          ["style in ['Abbaye','Belgian Pale Ale', 'Lager', 'IPA', 'Alcool Free', 'White']",
-    #           "color in ['White', 'Blond', 'Amber', 'Brown']"],
-    #          [0, 0.1, 0.25, 0.6, 0, 1, 0]),
-    # Customer(12, "Emilie", "Grey", 2016, 10, 2, 2018, 1, 23, 2,
-    #          ["strongness<9",
-    #           "style in ['Belgian Pale Ale', 'White', 'Alcool Free', 'Lager', 'IPA']",
-    #           "color in ['White', 'Blond', 'Amber', 'Brown']"],
-    #          [0.5, 0.5, 0.5, 0.5, 0.6, 0, 0]),
-    # Customer(13, "Mia", "Khalifa", 2017, 1, 4, 2017, 12, 20, 3,
-    #          ["style in ['Abbaye','Belgian Dark Ale', 'IPA']", "color in ['Amber', 'Brown']"],
-    #          [0.15, 0.15, 0.2, 0.3, 0.3, 0.5, 0]),
-    # Customer(14, "Cassidy", "Banks", 2016, 1, 3, 2018, 1, 8, 2,
-    #          ["strongness>6", "strongness<10",
-    #           "style in ['Abbaye','Belgian Pale Ale']", "color in ['Blond', 'Amber']"],
-    #          [0, 0, 0.1, 0.1, 1, 0.8, 0]),
-    # Customer(15, "Régine", "Zylberberg", 2016, 3, 22, 2018, 1, 20, 4,
-    #          ["strongness<9",
-    #           "style in ['Belgian Pale Ale', 'lager', 'White']", "color in ['White', 'Blond', 'Amber', 'Brown']"],
-    #          [0.6, 0.6, 0.7, 0.8, 1, 0.9, 0]),
-    # Customer(16, "Nikita", "Bellucci", 2017, 2, 1, 2018, 1, 10, 1,
-    #          ["strongness<9",
-    #           "style in ['Belgian Pale Ale']", "color in ['Blond', 'Amber', 'Brown']"],
-    #         [0, 0, 0, 0.3, 0.5, 0.5, 0])
-]
-
-bar = Bar(beers, customers)
-
-
-##############################################################################
 
 def getTempetatureFactor(temperature):
     if temperature < 5:
-        return 0.8
+        return 0.85
     if temperature > 22:
-        return 2 - (22 / temperature)
+        return 2 - (22 / temperature)  # [1.04 ; 1.35]
 
     return 1
 
@@ -392,41 +333,42 @@ def getHumidityFactor(humidity):
     if humidity < 0.7:
         return 1.2
     if humidity > 0.9:
-        return 0.7
+        return 0.8
 
     return 1
 
 
+def willCustomerComeThisDay(customer, weather, singleDateTime):
+    # dayPonderation = percent of chance the customer goes to the bar today
+    # get standard ponderation for this customer for today
+    chancesHeWillComeToday = customer.ponderationDays[singleDateTime.weekday()]
+
+    # let's add some random to our ponderation, between -0.2 and + 0.2
+    # dayPonderation += (-0.2 + math.ceil(random.random() * 0.4))
+    # dayPonderation = max(0, min(1, dayPonderation))  # just to ensure to get in [0, 1] only
+
+    # The further we are in the month, the lower money the customer have :/
+    chancesHeWillComeToday *= round(math.sin(0.03 * singleDateTime.day + math.pi / 2), 4)
+
+    # moderate ponderation with weather
+    chancesHeWillComeToday *= getTempetatureFactor(weather.temperature)  # 0.85 ; 1 ; [1.04 ; 1.35]
+    chancesHeWillComeToday *= getHumidityFactor(weather.humidity)  # 1.2 ; 1 ; 0.8
+
+    # random=[0.0, 1.0], so it's convenient to compare with chances the customer will come today
+    return random.random() < chancesHeWillComeToday
+
+
 def generateUptakesFor1Customer(customer, weather, singleDateTime):
     """ Generates all the uptakes of a customer, based on its habits """
+
+    if not willCustomerComeThisDay(customer, weather, singleDateTime):
+        return None
 
     # generates a random number of uptakes, based on the user habits
     nbUptakes = max(0, customer.averageUptakesPerDay + (-1 + math.ceil(random.random() * 2)))
     nbSuitableBeers = len(customer.suitableBeers)
 
     if nbSuitableBeers == 0:
-        return None
-
-    # dayPonderation = percent of chance the customer goes to the bar today
-    dayPonderation = customer.ponderationDays[
-        singleDateTime.weekday()]  # get standard ponderation for this customer for today
-    dayPonderation += (
-            -0.2 + math.ceil(random.random() * 0.4))  # let's add some random to our ponderation, between -0.2 and + 0.2
-    dayPonderation = max(0, min(1, dayPonderation))  # just to ensure to get in [0, 1] only
-
-    chancesHeWillComeToday = dayPonderation
-
-    # moderate ponderation with usual frequentation of the bar in this period
-    chancesHeWillComeToday *= monthPonderations[singleDateTime.month - 1]
-
-    # moderate ponderation with weather
-    chancesHeWillComeToday *= getTempetatureFactor(weather.temperature)
-    chancesHeWillComeToday *= getHumidityFactor(weather.humidity)
-
-    # random=[0.0, 1.0], so it's convenient to compare with chances the customer will come today
-    customerComesToday = random.random() < chancesHeWillComeToday
-
-    if not customerComesToday:
         return None
 
     beers = []
@@ -477,7 +419,10 @@ def generateMonthsHumidity():
 def generateData():
     endDay = lastDay()
 
-    generateCustomers()
+    customers = generateCustomers()
+    beers = generateBeers()
+
+    bar = Bar(beers, customers)
 
     # pre-compute an average humidity per month to speed-up computation of the weather conditions per day
     averageHumidityPerMonth = generateMonthsHumidity()
@@ -493,8 +438,11 @@ def generateData():
                     dailyUptakes.uptakes.append(uptakes)
                     customerUptakes = CustomerDailyUptakes(singleDateTime, uptakes.beersId)
                     customer.uptakes.append(customerUptakes)
+                    bar.nbTotalUptakes += len(uptakes.beersId)
 
         bar.dailyUptakes.append(dailyUptakes)
+
+    return bar
 
 
 ##############################################################################
@@ -502,11 +450,11 @@ def generateData():
 NB_CUSTOMERS = 50
 OPENING_DATE = _dt(2012, 1, 1)
 LAST_DATE = lastDay()
-monthPonderations = [0.5, 0.6, 0.6, 0.9, 1, 1, 0.9, 0.5, 1, 1, 1, 0.5]
+monthPonderations = [7, 8, 8.5, 9, 10, 10, 8.5, 6.5, 10, 10, 10, 6]
 
 """ Start data generation """
-generateData()
+bar = generateData()
 with open('./zenibar_history.json', 'w+') as fu:
     fu.write(bar.to_JSON())
 
-print(bar.to_JSON())
+print(bar.nbTotalUptakes)
