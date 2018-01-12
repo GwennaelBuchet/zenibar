@@ -347,9 +347,6 @@ def willCustomerComeThisDay(customer, weather, singleDateTime):
     # dayPonderation += (-0.2 + math.ceil(random.random() * 0.4))
     # dayPonderation = max(0, min(1, dayPonderation))  # just to ensure to get in [0, 1] only
 
-    # The further we are in the month, the lower money the customer have :/
-    chancesHeWillComeToday *= round(math.sin(0.03 * singleDateTime.day + math.pi / 2), 4)
-
     # moderate ponderation with weather
     chancesHeWillComeToday *= getTempetatureFactor(weather.temperature)  # 0.85 ; 1 ; [1.04 ; 1.35]
     chancesHeWillComeToday *= getHumidityFactor(weather.humidity)  # 1.2 ; 1 ; 0.8
@@ -366,6 +363,9 @@ def generateUptakesFor1Customer(customer, weather, singleDateTime):
 
     # generates a random number of uptakes, based on the user habits
     nbUptakes = max(0, customer.averageUptakesPerDay + (-1 + math.ceil(random.random() * 2)))
+    # The further we are in the month, the lower money the customer have :/
+    nbUptakes *= round(math.sin(0.03 * singleDateTime.day + math.pi / 2), 4) # [1; 0.6]
+
     nbSuitableBeers = len(customer.suitableBeers)
 
     if nbSuitableBeers == 0:
