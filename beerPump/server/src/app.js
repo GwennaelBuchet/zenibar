@@ -6,9 +6,10 @@ let http = require('http').Server(app);
 let ws = require("nodejs-websocket");
 let fetch = require('node-fetch');
 
-let MAINSERVER_IP = "http://192.168.43.97:8090";
+let MAINSERVER_IP = "http://localhost:8090"; // "http://192.168.43.97:8090";
 
 let customer = null;
+let beers = [];
 
 let bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -33,24 +34,25 @@ function json(response) {
     return response.json()
 }
 
-
 app.post("/connect", function (req, res) {
     let id = req.body.id;
-
-    console.log("Receive connection for customer with id:" + id);
 
     fetch(MAINSERVER_IP + "/customers/" + id, {mode: 'cors'})
         .then(status)
         .then(json)
-        .then(function(data) {
+        .then(function (data) {
             customer = data;
             serverws.connections.forEach(function (conn) {
                 conn.sendText(JSON.stringify(customer));
             })
-        }).catch(function(error) {
+        }).catch(function (error) {
         console.log('Request failed', error);
     });
 
+});
+
+app.get("/beers", function (req, res) {
+    res.send(beers);
 });
 
 
@@ -63,6 +65,15 @@ let server = app.listen(8092, function () {
     let host = server.address().address;
     let port = server.address().port;
     console.log("Server running and listening @ " + host + ":" + port);
+});
+
+fetch(MAINSERVER_IP + "/beers/", {mode: 'cors'})
+    .then(status)
+    .then(json)
+    .then(function (data) {
+        beers = data;
+    }).catch(function (error) {
+    console.log('Request failed', error);
 });
 
 let serverws = ws.createServer(function (conn) {

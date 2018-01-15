@@ -15,75 +15,60 @@ new Vue({
     el: '#wrapper',
 
     data: {
-        ws: null, // Our websocket
-        customer:
-            {
-                "averageUptakesPerDay": 1,
-                "firstname": "Josephine",
-                "habits": [
-                    "strongness<9",
-                    "style in ['Abbaye','Belgian Pale Ale', 'Lager']",
-                    "color in ['Blond', 'Amber', 'Brown']"
-                ],
-                "id": 5,
-                "lastname": "Angegardien",
-                "lastvisitDate": "2017-12-21 00:00:00",
-                "lastvisitDay": 21,
-                "lastvisitMonth": 12,
-                "lastvisitYear": 2017,
-                "ponderationDays": [
-                    0.0,
-                    0.0,
-                    0.2,
-                    0.4,
-                    0,
-                    0.5,
-                    0
-                ],
-                "registrationDate": "2017-10-09 00:00:00",
-                "registrationDay": 9,
-                "registrationMonth": 10,
-                "registrationYear": 2017,
-                "suitableBeers": [
-                    {
-                        "brand": "Cuv\u00e9e des Trolls",
-                        "color": "Blond",
-                        "id": 5,
-                        "model": "Blonde",
-                        "strongness": 7,
-                        "style": "Belgian Pale Ale"
-                    }
-                ],
-                "uptakes": [
-                    {
-                        "beersId": [
-                            10,
-                            15
-                        ],
-                        "day": 9,
-                        "month": 10,
-                        "year": 2017
-                    }
-                ]
-            }
+        ws: null,
+        beers: [],
+        customer: null
     },
 
     created: function () {
         let self = this;
+
+        fetch("http://localhost:8092/beers", {mode: 'cors'})
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                self.beers = data;
+            })
+            .catch(function (error) {
+                console.log('Request fa￼iled', error);
+            });
+
         this.ws = new WebSocket("ws://" + window.location.hostname + ":8082");
 
         this.ws.onopen = function (event) {
             console.log("Websocket connection opened.");
         };
         this.ws.onmessage = function (event) {
-            let msg = JSON.parse(event.data);
-            //self.updateCustomer(msg);
-            self.customer = msg;
+            self.customer = JSON.parse(event.data);
         };
         this.ws.onerror = function (event) {
             console.log("Websocket connection error : " + event);
         };
+
+        fetch("http://localhost:8092/connect",
+            {
+                mode: 'cors', method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: 'id=2'
+            })
+            .then(function (data) {
+                console.log(data)
+            })
+            .catch(function (error) {
+                console.log("Cannot connect with customer id 1");
+            });
     },
 
-    computed: {}
+    methods: {
+        getBeerFromId: function (id) {
+            for (let b of this.beers) {
+                if (b.id == id)
+                    return b;
+            }
+            return null;
+        }
+    }
 });

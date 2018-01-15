@@ -29,7 +29,8 @@ let customeritem = Vue.component(
 
         methods: {
             pictureURL: function (firstname, lastname) {
-                return "http://192.168.43.97:8090/pictures/" + firstname + "_" + lastname + ".jpg";
+                //return "http://192.168.43.97:8090/pictures/customers/" + firstname + "_" + lastname + ".jpg";
+                return "http://localhost:8090/pictures/customers/" + firstname + "_" + lastname + ".jpg";
             }
         }
     }

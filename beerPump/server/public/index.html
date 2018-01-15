@@ -9,7 +9,12 @@
     <title>Welcome to Zenibar !</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css"/>
+
     <link rel="stylesheet" href="assets/css/consumer.css"/>
+    <link rel="stylesheet" href="assets/css/carousel.css"/>
     <link rel="stylesheet" href="assets/css/main.css"/>
 </head>
 <body>
@@ -18,30 +23,24 @@
 <div id="wrapper">
 
     <!-- Header -->
-    <header id="header">
-        <span class="avatar"><img src="images/beer2.jpg" alt=""/></span>
-        <h1>Welcome to Zenibar !</h1>
-        <h2>List of customers below</h2>
-        <ul class="icons">
-            <li><a href="#" class="icon style2 fa-beer"><span class="label">Beer</span></a></li>
-            <li><a href="#" class="icon fa-long-arrow-right"><span class="label"></span></a></li>
-            <li><a href="#" class="icon style2 fa-plug"><span class="label">Connected</span></a></li>
-            <li><a href="#" class="icon fa-long-arrow-left"><span class="label"></span></a></li>
-            <li><a href="#" class="icon style2 fa-glass"><span class="label">Drink</span></a></li>
-        </ul>
-    </header>
+    <header-item v-if="customer !== null" :customer="customer"></header-item>
 
     <!-- Main -->
-    <section id="">
+    <!-- Thumbnails -->
+    <section id="customerView">
 
-        <!-- Thumbnails -->
-        <section class="thumbnails" id="customerView">
-
-            <customer-item :customer="customer"> </customer-item>
-
-        </section>
+        <history-item class="align-center" v-if="customer!==null" :customer="customer" :beers="beers"
+                      :lastuptake="customer.uptakes[customer.uptakes.length-1]"></history-item>
 
     </section>
+
+
+    <section class="thumbnails" id="beersView">
+
+        <beers-item class="align-center" v-if="beers!==null" :beers="beers"></beers-item>
+
+    </section>
+
 
     <!-- Footer -->
     <footer id="footer">
@@ -59,14 +58,20 @@
 
 <!-- Scripts -->
 <script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.poptrox.min.js"></script>
+<!--script src="assets/js/jquery.poptrox.min.js"></script-->
+
+<script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/skel.min.js"></script>
-<script src="assets/js/main.js"></script>
+<!--script src="assets/js/main.js"></script-->
 
 
 <script src="/vue/dist/vue.js"></script>
 <script src="/vue-resource/dist/vue-resource.js"></script>
+<script src="js/header.component.js"></script>
 <script src="js/customer.component.js"></script>
+<script src="js/history.component.js"></script>
+<script src="js/beer.component.js"></script>
+<script src="js/beers.component.js"></script>
 <script src="js/app.js"></script>
 
 </body>
