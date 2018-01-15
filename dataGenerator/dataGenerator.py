@@ -7,13 +7,14 @@ import json
 
 
 class Beer:
-    def __init__(self, id, brand, model, strongness, style, color):
+    def __init__(self, id, brand, model, strongness, style, color, origin):
         self.id = id
         self.brand = brand
         self.model = model
         self.strongness = strongness
         self.style = style
         self.color = color
+        self.origin = origin
 
     def canMatch(self, conditions):
         for condition in conditions:
@@ -272,33 +273,33 @@ class Weather:
 
 
 def generateBeers():
-    beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown"),
-             Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown"),
-             Beer(3, "Rochefort", "8", 9.2, "Abbaye", "Brown"),
-             Beer(4, "Saint Bernardus", "Abt 12", 10, "Belgian Pale Ale", "Brown"),
-             Beer(5, "Cuvée des Trolls", "Blonde", 7, "Belgian Pale Ale", "Blond"),
-             Beer(6, "Orval", "Blonde", 7, "Abbaye", "Amber"),
-             Beer(7, "Brewdog", "Punk IPA", 5.6, "IPA", "Blond"),
-             Beer(8, "Westmalle", "Triple", 9.5, "Abbaye", "Blond"),
-             Beer(9, "Rince Cochon", "Blonde", 8.5, "Belgian Pale Ale", "Blond"),
-             Beer(10, "Hinano", "", 5, "Lager", "Blond"),
-             Beer(11, "La Levrette", "Blonde", 5, "Lager", "Blond"),
-             Beer(12, "La Fée Torchette", "Blonde", 6.5, "Lager", "Blond"),
-             Beer(13, "La Trappe", "Quadrupel", 10, "Belgian Pale Ale", "Amber"),
-             Beer(14, "Kwak", "", 8.4, "Belgian Pale Ale", "Amber"),
-             Beer(15, "Tripel Karmeliet", "", 8.4, "Belgian Pale Ale", "Blond"),
-             Beer(16, "Omnipollo", "Omnipollo Fatamorgana", 8, "IPA", "Amber"),
-             Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond"),
-             Beer(18, "Iron Maiden", "Trooper", 4.7, "Extra Special Bitter", "Blond"),
-             Beer(18, "Gulden", "Drak", 10.7, "Belgian Dark Ale", "Brown"),
-             Beer(19, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond"),
-             Beer(20, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown"),
-             Beer(21, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond"),
-             Beer(22, "Pietra", "", 6, "Lager", "Blond"),
-             Beer(23, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond"),
-             Beer(24, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond"),
-             Beer(25, "Blue Moon", "White Ale", 5.4, "White", "White"),
-             Beer(26, "Rousse du Mont Blanc", "W", 6.5, "Amber", "Amber")
+    beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown", "Belgium"),
+             Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown", "Belgium"),
+             Beer(3, "Rochefort", "8", 9.2, "Abbaye", "Brown", "Belgium"),
+             Beer(4, "Saint Bernardus", "Abt 12", 10, "Belgian Pale Ale", "Brown", "Belgium"),
+             Beer(5, "Cuvée des Trolls", "Blonde", 7, "Belgian Pale Ale", "Blond", "Belgium"),
+             Beer(6, "Orval", "Blonde", 7, "Abbaye", "Amber", "Belgium"),
+             Beer(7, "Brewdog", "Punk IPA", 5.6, "IPA", "Blond", "Scotland"),
+             Beer(8, "Westmalle", "Triple", 9.5, "Abbaye", "Blond", "Belgium"),
+             Beer(9, "Rince Cochon", "Blonde", 8.5, "Belgian Pale Ale", "Blond", "Belgium"),
+             Beer(10, "Hinano", "", 5, "Lager", "Blond", "Polynesia"),
+             Beer(11, "La Levrette", "Blonde", 5, "Lager", "Blond", "France"),
+             Beer(12, "La Fée Torchette", "Blonde", 6.5, "Lager", "Blond", "France"),
+             Beer(13, "La Trappe", "Quadrupel", 10, "Belgian Pale Ale", "Amber", "Belgium"),
+             Beer(14, "Kwak", "", 8.4, "Belgian Pale Ale", "Amber", "Belgium"),
+             Beer(15, "Tripel Karmeliet", "", 8.4, "Belgian Pale Ale", "Blond", "Belgium"),
+             Beer(16, "Omnipollo", "Fatamorgana", 8, "IPA", "Amber", "Sweden"),
+             Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond", "Belgium"),
+             Beer(18, "Iron Maiden", "Trooper", 4.7, "Extra Special Bitter", "Blond", "England"),
+             Beer(18, "Gulden", "Draak", 10.7, "Belgian Dark Ale", "Brown", "Belgium"),
+             Beer(19, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond", "Belgium"),
+             Beer(20, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown", "Belgium"),
+             Beer(21, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond", "France"),
+             Beer(22, "Pietra", "", 6, "Lager", "Blond", "France"),
+             Beer(23, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond", "Scotland"),
+             Beer(24, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond", "Belgium"),
+             Beer(25, "Blue Moon", "White Ale", 5.4, "White", "White", "USA"),
+             Beer(26, "Rousse du Mont Blanc", "", 6.5, "Amber", "Amber", "France")
              ]
     return beers
 
