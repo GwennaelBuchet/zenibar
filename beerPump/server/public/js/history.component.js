@@ -8,7 +8,7 @@ let historyitem = Vue.component(
         template: '\
 		<div class="container"> \
 			<div class="row text-center"> \
-				<div class="col-md-1" style="margin-top: 5px;"> \
+				<div class="col-md-12" style="margin-top: 5px;"> \
 					<div class="pricing-table"> \
 						<div class="panel panel-primary" style="border: none;"> \
 							<div class="controle-header panel-heading panel-heading-landing"> \

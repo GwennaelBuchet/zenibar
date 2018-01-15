@@ -22,23 +22,18 @@
 <!-- Wrapper -->
 <div id="wrapper">
 
-    <!-- Header -->
-    <header-item v-if="customer !== null" :customer="customer"></header-item>
-
-    <!-- Main -->
-    <!-- Thumbnails -->
-    <section id="customerView">
-
-        <history-item class="align-center" v-if="customer!==null" :customer="customer" :beers="beers"
+    <div class="parent-header">
+        <!-- Header -->
+        <header-item v-if="customer !== null" :customer="customer"></header-item>
+        <!-- Main -->
+        <!-- Thumbnails -->
+        <history-item id="customerView" class="align-center" v-if="customer!==null" :customer="customer" :beers="beers"
                       :lastuptake="customer.uptakes[customer.uptakes.length-1]"></history-item>
 
-    </section>
-
+    </div>
 
     <section class="thumbnails" id="beersView">
-
         <beers-item class="align-center" v-if="beers!==null" :beers="beers"></beers-item>
-
     </section>
 
 
@@ -71,6 +66,7 @@
 <script src="js/customer.component.js"></script>
 <script src="js/history.component.js"></script>
 <script src="js/beer.component.js"></script>
+<script src="js/beerslist.component.js"></script>
 <script src="js/beers.component.js"></script>
 <script src="js/app.js"></script>
 
