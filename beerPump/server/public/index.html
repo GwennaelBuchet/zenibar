@@ -28,7 +28,7 @@
         <!-- Main -->
         <!-- Thumbnails -->
         <history-item id="customerView" class="align-center" v-if="customer!==null" :customer="customer" :beers="beers"
-                      :lastuptake="getLastUptake()"></history-item>
+                      :lastuptake="customer.uptakes[customer.uptakes.length - 1]"></history-item>
 
     </div>
 

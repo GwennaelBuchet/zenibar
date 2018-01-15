@@ -27,7 +27,7 @@ let historyitem = Vue.component(
 							</div> \
 							<div class="panel-footer panel-footer-landing">\
                                 <h1 class="panel-title panel-title-landing" > \
-                                    <span class="btn btn-price" style="font-size: 1.1em" v-on:click="orderBeer">Reorder</span> \
+                                    <span class="btn btn-price" style="font-size:1.1em" v-on:click="orderBeer">Reorder</span> \
                                 </h1> \
 							</div>\
 						</div> \

@@ -30,6 +30,37 @@ app.post("/drink", function (req, res) {
     let customerId = req.body.customerId;
     let beerId = req.body.beerId;
 
+    for (let customer of bar.customers) {
+        if (customer["id"] == customerId) {
+
+            let today = new Date();
+            let d = today.getDate();
+            let m = today.getMonth();
+            let y = today.getFullYear();
+            let lu = customer.uptakes[customer.uptakes.length - 1];
+
+            let uptake = lu;
+
+            if (lu.day !== d && lu.month !== m && lu.year !== y) {
+                let uptake = {
+                    day: d,
+                    month: m,
+                    year: y,
+                    beersId: [beerId]
+                };
+
+                customer.uptakes.push(uptake);
+            }
+            else {
+                lu.beersId.push(beerId);
+            }
+
+            res.send(customer);
+            break;
+        }
+    }
+
+
     console.log("New uptake : " + customerId + ";" + beerId);
 });
 

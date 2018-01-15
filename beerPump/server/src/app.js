@@ -68,8 +68,15 @@ app.post("/drink", function (req, res) {
             },
             body: 'customerId=' + customerId + "&beerId=" + beerId
         }
-        )
-        .catch(function (error) {
+    )
+        .then(status)
+        .then(json)
+        .then(function (data) {
+            customer = data;
+            serverws.connections.forEach(function (conn) {
+                conn.sendText(JSON.stringify(customer));
+            })
+        }).catch(function (error) {
         console.log('Request failed', error);
     });
 });
