@@ -6,7 +6,9 @@ let http = require('http').Server(app);
 let ws = require("nodejs-websocket");
 let fetch = require('node-fetch');
 
-let MAINSERVER_IP = "http://localhost:8090"; // "http://192.168.43.97:8090";
+let ip = require("ip");
+
+let MAINSERVER_IP = "http://192.168.43.97:8090"; //http://"+ip.address()+":8090"; // "http://192.168.43.97:8090";
 
 let customer = null;
 let beers = [];

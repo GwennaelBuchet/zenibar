@@ -23,7 +23,7 @@ new Vue({
     created: function () {
         let self = this;
 
-        fetch("http://localhost:8092/beers", {mode: 'cors'})
+        fetch("http://" + window.location.hostname + ":8092/beers", {mode: 'cors'})
             .then(function (response) {
                 return response.json();
             })
@@ -46,7 +46,7 @@ new Vue({
             console.log("Websocket connection error : " + event);
         };
 
-        fetch("http://localhost:8092/connect",
+        fetch("http://" + window.location.hostname + ":8092/connect",
             {
                 mode: 'cors', method: 'POST',
                 headers: {
