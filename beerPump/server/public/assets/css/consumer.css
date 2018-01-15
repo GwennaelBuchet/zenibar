@@ -1,4 +1,10 @@
 
+.lastbeer-desc {
+    vertical-align: left;
+    color: #8a6d3b;
+    font-size: 1.2em;
+}
+
 .pricing-table {
     max-width: 368px;
     margin: 0 auto;

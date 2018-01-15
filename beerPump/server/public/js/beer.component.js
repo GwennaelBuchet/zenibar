@@ -9,7 +9,7 @@ let beeritem = Vue.component(
         '<div class="col-md-3 col-sm-4" v-bind:class="{\'hidden-xs\': index===0, \'hidden-sm\': index===2 || index===3}">\n' +
         '    <div class="block-text rel zmin">\n' +
         '        <a title="" href="#">{{beer.brand}} {{beer.model}}</a>\n' +
-        '        <div class="mark">Your correspondance: \n' +
+        '        <div class="mark">Matching: \n' +
         '            <span class="rating-input">\n' +
         '                <span data-value="0" class="glyphicon glyphicon-star"></span>\n' +
         '                <span data-value="1" class="glyphicon glyphicon-star"></span>\n' +

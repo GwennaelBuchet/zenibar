@@ -16,13 +16,18 @@ let historyitem = Vue.component(
 									Your last order \
 								</h1> \
 							</div> \
-							<div class="panel-body panel-body-landing"> \
-								<img :src="pictureURL(lastBeer.brand, lastBeer.model)" width="79px" height="152px"> \
-								<span>{{lastBeer.brand}} {{lastBeer.model}} ({{lastBeer.strongness}}°) </span>\
+							<div class="panel-body panel-body-landing parent-header"> \
+								<div><img :src="pictureURL(lastBeer.brand, lastBeer.model)" width="79px" height="152px"></div> \
+								<div>\
+								<div class="lastbeer-desc" style="font-weight: bolder">{{lastBeer.brand}} {{lastBeer.model}} ({{lastBeer.strongness}}°) </div>\
+								<div class="lastbeer-desc">{{lastBeer.style}}</div>\
+								<div class="lastbeer-desc">Color: {{lastBeer.color}}</div>\
+								<div class="lastbeer-desc">Origin: {{lastBeer.origin}}</div>\
+								</div>\
 							</div> \
 							<div class="panel-footer panel-footer-landing">\
                                 <h1 class="panel-title panel-title-landing" > \
-                                    <span class="btn btn-price">Reorder</span> \
+                                    <span class="btn btn-price" style="font-size: 1.1em">Reorder</span> \
                                 </h1> \
 							</div>\
 						</div> \
