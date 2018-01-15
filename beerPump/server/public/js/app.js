@@ -41,6 +41,8 @@ new Vue({
         };
         this.ws.onmessage = function (event) {
             self.customer = JSON.parse(event.data);
+            console.log("New customer connected : ");
+            console.log(self.customer.firstname + " " + self.customer.lastname);
         };
         this.ws.onerror = function (event) {
             console.log("Websocket connection error : " + event);
@@ -52,7 +54,7 @@ new Vue({
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
                 },
-                body: 'id=3'
+                body: 'id=2'
             })
             .then(function (data) {
                 console.log(data)
@@ -69,6 +71,14 @@ new Vue({
                     return b;
             }
             return null;
+        },
+
+        getLastUptake: function () {
+            if (this.customer === null || this.customer === undefined) {
+                return null;
+            }
+
+            return this.customer.uptakes[this.customer.uptakes.length - 1];
         }
     }
-});
+})

@@ -37,6 +37,12 @@ let historyitem = Vue.component(
 		</div>',
 
         props: ['customer', 'beers', 'lastuptake'],
+        watch: {
+            lastuptake: function(newVal, oldVal) { // watch it
+                console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+                this.updateLastBeer();
+            }
+        },
 
         data: function () {
             return {
@@ -45,14 +51,18 @@ let historyitem = Vue.component(
         },
 
         created: function () {
-            let lastBeerId = this.lastuptake.beersId[this.lastuptake.beersId.length - 1];
-
-            this.lastBeer = this.getBeerFromId(lastBeerId);
+            this.updateLastBeer();
         },
 
         methods: {
             pictureURL: function (brand, model) {
                 return "http://localhost:8090/pictures/beers/" + brand + "_" + model + ".jpg";
+            },
+
+            updateLastBeer:function() {
+                let lastBeerId = this.lastuptake.beersId[this.lastuptake.beersId.length - 1];
+
+                this.lastBeer = this.getBeerFromId(lastBeerId);
             },
 
             getBeerFromId: function (id) {
@@ -64,4 +74,4 @@ let historyitem = Vue.component(
             }
         }
     }
-);
+)
