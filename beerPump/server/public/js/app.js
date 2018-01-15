@@ -31,7 +31,7 @@ new Vue({
                 self.beers = data;
             })
             .catch(function (error) {
-                console.log('Request fa￼iled', error);
+                console.log('Request failed', error);
             });
 
         this.ws = new WebSocket("ws://" + window.location.hostname + ":8082");

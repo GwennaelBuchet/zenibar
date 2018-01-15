@@ -118,7 +118,7 @@
     height: 14rem;
     width: 14rem;
     border: solid rgba(0, 0, 0, 0.3) 1px;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     margin-left: auto;
     margin-right: auto;
 
