@@ -60,7 +60,7 @@ new Vue({
                 console.log(data)
             })
             .catch(function (error) {
-                console.log("Cannot connect with customer id 1");
+                console.log("Cannot connect with customer id");
             });
     },
 
@@ -79,6 +79,32 @@ new Vue({
             }
 
             return this.customer.uptakes[this.customer.uptakes.length - 1];
+        },
+
+        orderNewBeer: function (beerId) {
+            let self = this;
+
+            console.log("app order: " + self.customer.id + " ; " + beerId);
+
+            //update uptakes for this customer
+            this.customer.uptakes[self.customer.uptakes.length - 1].beersId.push(beerId);
+
+            //send data to the server
+            fetch("http://" + window.location.hostname + ":8092/drink",
+                {
+                    mode: 'cors', method: 'POST',
+                    headers: {
+                        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
+                    body: 'customerId=' + self.customer.id + "&beerId=" + beerId
+                })
+                .then(function (data) {
+                    console.log(data)
+                })
+                .catch(function (error) {
+                    console.log("Cannot connect with order a new beer :'( ");
+                });
+
         }
     }
 })

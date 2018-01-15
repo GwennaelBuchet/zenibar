@@ -21,6 +21,9 @@ let beeritem = Vue.component(
         '        </div>\n' +
         '        <p>Alcool: {{beer.strongness}}°</p>\n' +
         '        <p>Style: {{beer.style}}</p>\n' +
+        '    <h1 class="panel-title panel-title-landing" > \n' +
+        '        <span class="btn btn-price" style="font-size: 1.1em" v-on:click="orderBeer">Order</span> \n' +
+        '    </h1>' +
         '        <ins class="ab zmin sprite sprite-i-triangle block"></ins>\n' +
         '    </div>\n' +
         '    <div class="person-text rel">\n' +
@@ -34,6 +37,11 @@ let beeritem = Vue.component(
         methods: {
             pictureURL: function (brand, model) {
                 return "http://localhost:8090/pictures/beers/" + brand + "_" + model + ".jpg";
+            },
+
+            orderBeer: function (event) {
+                console.log("history order: "+ this.beer.id);
+                this.$parent.$parent.$parent.orderNewBeer(this.beer.id);
             }
         }
     }

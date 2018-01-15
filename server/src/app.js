@@ -26,6 +26,13 @@ app.get('/pictures/:folder/:file', function (req, res) {
     res.sendFile('data/pictures/' + folder + "/" + file, {root: __dirname + "/../"});
 });
 
+app.post("/drink", function (req, res) {
+    let customerId = req.body.customerId;
+    let beerId = req.body.beerId;
+
+    console.log("New uptake : " + customerId + ";" + beerId);
+});
+
 
 /**
  * Get a list of JSON for all registered drinkers

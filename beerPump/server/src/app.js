@@ -7,7 +7,7 @@ let ws = require("nodejs-websocket");
 let fetch = require('node-fetch');
 
 let ip = require("ip");
-console.log("BeerPump server adress: " +ip.address());
+console.log("BeerPump server adress: " + ip.address());
 
 let MAINSERVER_IP = "http://192.168.43.97:8090"; //http://"+ip.address()+":8090"; // "http://192.168.43.97:8090";
 
@@ -52,6 +52,26 @@ app.post("/connect", function (req, res) {
         console.log('Request failed', error);
     });
 
+});
+
+app.post("/drink", function (req, res) {
+    let customerId = req.body.customerId;
+    let beerId = req.body.beerId;
+
+    console.log("BeerPump order: " + customerId + " ; " + beerId);
+
+    fetch(MAINSERVER_IP + "/drink",
+        {
+            mode: 'cors', method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: 'customerId=' + customerId + "&beerId=" + beerId
+        }
+        )
+        .catch(function (error) {
+        console.log('Request failed', error);
+    });
 });
 
 app.get("/beers", function (req, res) {

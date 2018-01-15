@@ -27,7 +27,7 @@ let historyitem = Vue.component(
 							</div> \
 							<div class="panel-footer panel-footer-landing">\
                                 <h1 class="panel-title panel-title-landing" > \
-                                    <span class="btn btn-price" style="font-size: 1.1em">Reorder</span> \
+                                    <span class="btn btn-price" style="font-size: 1.1em" v-on:click="orderBeer">Reorder</span> \
                                 </h1> \
 							</div>\
 						</div> \
@@ -38,7 +38,7 @@ let historyitem = Vue.component(
 
         props: ['customer', 'beers', 'lastuptake'],
         watch: {
-            lastuptake: function(newVal, oldVal) { // watch it
+            lastuptake: function (newVal, oldVal) { // watch it
                 console.log('Prop changed: ', newVal, ' | was: ', oldVal)
                 this.updateLastBeer();
             }
@@ -59,7 +59,7 @@ let historyitem = Vue.component(
                 return "http://localhost:8090/pictures/beers/" + brand + "_" + model + ".jpg";
             },
 
-            updateLastBeer:function() {
+            updateLastBeer: function () {
                 let lastBeerId = this.lastuptake.beersId[this.lastuptake.beersId.length - 1];
 
                 this.lastBeer = this.getBeerFromId(lastBeerId);
@@ -71,6 +71,11 @@ let historyitem = Vue.component(
                         return b;
                 }
                 return null;
+            },
+
+            orderBeer: function (event) {
+                console.log("history order: " + this.customer.id + " ; " + this.lastBeer.id);
+                this.$parent.orderNewBeer(this.lastBeer.id);
             }
         }
     }
