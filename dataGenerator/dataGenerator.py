@@ -291,15 +291,15 @@ def generateBeers():
              Beer(16, "Omnipollo", "Fatamorgana", 8, "IPA", "Amber", "Sweden"),
              Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond", "Belgium"),
              Beer(18, "Iron Maiden", "Trooper", 4.7, "Extra Special Bitter", "Blond", "England"),
-             Beer(18, "Gulden", "Draak", 10.7, "Belgian Dark Ale", "Brown", "Belgium"),
-             Beer(19, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond", "Belgium"),
-             Beer(20, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown", "Belgium"),
-             Beer(21, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond", "France"),
-             Beer(22, "Pietra", "", 6, "Lager", "Blond", "France"),
-             Beer(23, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond", "Scotland"),
-             Beer(24, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond", "Belgium"),
-             Beer(25, "Blue Moon", "White Ale", 5.4, "White", "White", "USA"),
-             Beer(26, "Rousse du Mont Blanc", "", 6.5, "Amber", "Amber", "France")
+             Beer(19, "Gulden", "Draak", 10.7, "Belgian Dark Ale", "Brown", "Belgium"),
+             Beer(20, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond", "Belgium"),
+             Beer(21, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown", "Belgium"),
+             Beer(22, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond", "France"),
+             Beer(23, "Pietra", "", 6, "Lager", "Blond", "France"),
+             Beer(24, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond", "Scotland"),
+             Beer(25, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond", "Belgium"),
+             Beer(26, "Blue Moon", "White Ale", 5.4, "White", "White", "USA"),
+             Beer(27, "Rousse du Mont Blanc", "", 6.5, "Amber", "Amber", "France")
              ]
     return beers
 
@@ -365,7 +365,7 @@ def generateUptakesFor1Customer(customer, weather, singleDateTime):
     # generates a random number of uptakes, based on the user habits
     nbUptakes = max(0, customer.averageUptakesPerDay + (-1 + math.ceil(random.random() * 2)))
     # The further we are in the month, the lower money the customer have :/
-    nbUptakes *= round(math.sin(0.03 * singleDateTime.day + math.pi / 2), 4) # [1; 0.6]
+    nbUptakes *= round(math.sin(0.03 * singleDateTime.day + math.pi / 2), 4)  # [1; 0.6]
 
     nbSuitableBeers = len(customer.suitableBeers)
 
