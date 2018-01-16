@@ -7,6 +7,7 @@ let ws = require("nodejs-websocket");
 
 // Bar data, with history, beers and costumers
 let bar = require("./../data/zenibar_history.json");
+let preferences = require("./../data/preferences_per_client");
 
 
 let bodyParser = require('body-parser');
@@ -60,7 +61,6 @@ app.post("/drink", function (req, res) {
         }
     }
 
-
     console.log("New uptake : " + customerId + ";" + beerId);
 });
 
@@ -88,6 +88,40 @@ app.get("/customers/:id", function (req, res) {
 app.get("/beers", function (req, res) {
     res.send(bar.beers);
 });
+
+let getCustomer = function (id) {
+    for (let customer of bar.customers) {
+        if (customer["id"] == id) {
+            return customer;
+        }
+    }
+
+    return null;
+};
+
+let readCustomersPreferences = function () {
+
+    for (let c = 0; c < 50; c++) {
+        let cp = preferences["" + c];
+        let customer = getCustomer(c);
+
+        customer.totalBeers = cp.total_beers;
+        customer.preferences = [];
+
+        for (let b = 1; b <= bar.beers.length; b++) {
+            if (cp[""+b] !== undefined) {
+                customer.preferences.push(
+                    {
+                        "beerId":b,
+                        "quantity":cp[""+b][0],
+                        "percent":(100 - cp[""+b][1]) / 100
+                    }
+                );
+            }
+        }
+    }
+
+}();
 
 /**
  * Server itself
