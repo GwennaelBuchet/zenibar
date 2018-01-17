@@ -15,13 +15,13 @@ import httplib, urllib
 
 import MFRC522
 
-continue_reading = True
 SERVER_URL = "127.0.0.1:8092"
+PIN_BUTTON = 12
 
 
 # Send
-def send_to_server(userID):
-    print("Sending to server " + SERVER_URL + " => " + userID)
+def sendUserIdToServer(userID):
+    print("Sending userID to server " + SERVER_URL + " => " + userID)
 
     params = urllib.urlencode({'id': userID})
     headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
@@ -29,6 +29,14 @@ def send_to_server(userID):
     conn.request("POST", "/connect", params, headers)
     conn.close()
 
+def sendOpeningToServer():
+    print("Sending opening to server " + SERVER_URL)
+
+    params = urllib.urlencode({})
+    headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+    conn = httplib.HTTPConnection(SERVER_URL)
+    conn.request("POST", "/drink", params, headers)
+    conn.close()
 
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal, frame):
@@ -44,16 +52,29 @@ signal.signal(signal.SIGINT, end_read)
 # Create an object of the class MFRC522
 MIFAREReader = MFRC522.MFRC522()
 
+# GPIO.setmode(GPIO.BCM)
+GPIO.setup(PIN_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
 # Welcome message
-print "Ready to read cards..."
-print "Press Ctrl-C to stop."
+print "Ready to read cards and bottle opener..."
 
-# This loop keeps checking for chips. If one is near it will get the UID and authenticate
-while continue_reading:
+counter = 0
+def readButton():
+    global counter
+    input_value = GPIO.input(PIN_BUTTON)
+    if input_value == False:
+        counter += 1
+        print('The button has been pressed ' + str(counter) + ' time')
+        sendOpeningToServer()
+        while input_value == False:
+            input_value = GPIO.input(PIN_BUTTON)
+        time.sleep(1)
 
+
+def readTag():
     userID = ""
 
-    # Scan for cards    
+    # Scan for cards
     (status, TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
 
     # Get the UID of the card
@@ -80,9 +101,16 @@ while continue_reading:
             # As all 16 values are the same (i.e. the userID), just pick one
             userID = userIDList.split(", ")[1]
             MIFAREReader.MFRC522_StopCrypto1()
-            send_to_server(userID)
+            sendUserIdToServer(userID)
             # Wait few seconds so ensure not spamming the server
             time.sleep(4)
 
         else:
             print "Authentication error"
+
+
+while True:
+
+    readButton()
+
+    readTag()
