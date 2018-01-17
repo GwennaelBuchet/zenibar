@@ -101,12 +101,13 @@ let getCustomer = function (id) {
 
 let readCustomersPreferences = function () {
 
-    for (let c = 0; c < 50; c++) {
+    /*for (let c = 0; c < 50; c++) {
         let cp = preferences["" + c];
         let customer = getCustomer(c);
 
         customer.totalBeers = cp.total_beers;
         customer.preferences = [];
+        customer.preferencesId = [];
 
         for (let b = 1; b <= bar.beers.length; b++) {
             if (cp[""+b] !== undefined) {
@@ -117,9 +118,10 @@ let readCustomersPreferences = function () {
                         "percent":(100 - cp[""+b][1]) / 100
                     }
                 );
+                customer.preferencesId.push(b                );
             }
         }
-    }
+    }*/
 
 }();
 

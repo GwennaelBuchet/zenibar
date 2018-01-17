@@ -7,7 +7,7 @@ import json
 
 
 class Beer:
-    def __init__(self, id, brand, model, strongness, style, color, origin):
+    def __init__(self, id, brand, model, strongness, style, color, origin, price):
         self.id = id
         self.brand = brand
         self.model = model
@@ -16,6 +16,7 @@ class Beer:
         self.color = color
         self.origin = origin
         self.rank = 0
+        self.price = price
 
     def canMatch(self, conditions):
         for condition in conditions:
@@ -39,7 +40,7 @@ class Customer:
 
     def __init__(self, id, firstname, lastname,
                  registrationDate, lastvisitDate,
-                 averageUptakesPerDay, habits, ponderationDays):
+                 averageUptakesPerDay, habits, ponderationDays, amount):
         self.id = id
         self.firstname = firstname
         self.lastname = lastname
@@ -58,6 +59,7 @@ class Customer:
         self.uptakes = []
         # ponderationDays correspond tho the percents of chance the customer will go to the bar for each day of the week
         self.ponderationDays = ponderationDays
+        self.amount = amount
 
     @staticmethod
     def generateName(indice):
@@ -143,6 +145,10 @@ class Customer:
         habits.append(color)
 
         return habits
+
+    @staticmethod
+    def generateAmount():
+        return math.ceil(36 + random.random() * 40)
 
     def _try(o):
         try:
@@ -238,14 +244,14 @@ class Bar:
         for beer in self.beers:
             if beer.canMatch(customer.habits):
                 customer.suitableBeers.append(beer)
-                customer.suitableBeers[len(customer.suitableBeers) -1].rank = 3 + math.ceil(random.random()*3)
+                customer.suitableBeers[len(customer.suitableBeers) - 1].rank = 3 + math.ceil(random.random() * 3)
 
     def addSuitableBeerToCustomers(self, beer):
         """ Try to find customers who can like this beer """
         for customer in self.customers:
             if beer.canMatch(customer.habits):
                 customer.suitableBeers.append(beer)
-                customer.suitableBeers[len(customer.suitableBeers) -1].rank = 3 + math.ceil(random.random()*3)
+                customer.suitableBeers[len(customer.suitableBeers) - 1].rank = 3 + math.ceil(random.random() * 3)
 
     def _try(self, o):
         try:
@@ -276,33 +282,33 @@ class Weather:
 
 
 def generateBeers():
-    beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown", "Belgium"),
-             Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown", "Belgium"),
-             Beer(3, "Rochefort", "8", 9.2, "Abbaye", "Brown", "Belgium"),
-             Beer(4, "Saint Bernardus", "Abt 12", 10, "Belgian Pale Ale", "Brown", "Belgium"),
-             Beer(5, "Cuvée des Trolls", "Blonde", 7, "Belgian Pale Ale", "Blond", "Belgium"),
-             Beer(6, "Orval", "Blonde", 7, "Abbaye", "Amber", "Belgium"),
-             Beer(7, "Brewdog", "Punk IPA", 5.6, "IPA", "Blond", "Scotland"),
-             Beer(8, "Westmalle", "Triple", 9.5, "Abbaye", "Blond", "Belgium"),
-             Beer(9, "Rince Cochon", "Blonde", 8.5, "Belgian Pale Ale", "Blond", "Belgium"),
-             Beer(10, "Hinano", "", 5, "Lager", "Blond", "Polynesia"),
-             Beer(11, "La Levrette", "Blonde", 5, "Lager", "Blond", "France"),
-             Beer(12, "La Fée Torchette", "Blonde", 6.5, "Lager", "Blond", "France"),
-             Beer(13, "La Trappe", "Quadrupel", 10, "Belgian Pale Ale", "Amber", "Belgium"),
-             Beer(14, "Kwak", "", 8.4, "Belgian Pale Ale", "Amber", "Belgium"),
-             Beer(15, "Tripel Karmeliet", "", 8.4, "Belgian Pale Ale", "Blond", "Belgium"),
-             Beer(16, "Omnipollo", "Fatamorgana", 8, "IPA", "Amber", "Sweden"),
-             Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond", "Belgium"),
-             Beer(18, "Iron Maiden", "Trooper", 4.7, "Extra Special Bitter", "Blond", "England"),
-             Beer(19, "Gulden", "Draak", 10.7, "Belgian Dark Ale", "Brown", "Belgium"),
-             Beer(20, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond", "Belgium"),
-             Beer(21, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown", "Belgium"),
-             Beer(22, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond", "France"),
-             Beer(23, "Pietra", "", 6, "Lager", "Blond", "France"),
-             Beer(24, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond", "Scotland"),
-             Beer(25, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond", "Belgium"),
-             Beer(26, "Blue Moon", "White Ale", 5.4, "White", "White", "USA"),
-             Beer(27, "Rousse du Mont Blanc", "", 6.5, "Amber", "Amber", "France")
+    beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown", "Belgium", 6),
+             Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown", "Belgium", 6),
+             Beer(3, "Rochefort", "8", 9.2, "Abbaye", "Brown", "Belgium", 5.5),
+             Beer(4, "Saint Bernardus", "Abt 12", 10, "Belgian Pale Ale", "Brown", "Belgium", 5),
+             Beer(5, "Cuvée des Trolls", "Blonde", 7, "Belgian Pale Ale", "Blond", "Belgium", 4.5),
+             Beer(6, "Orval", "Blonde", 7, "Abbaye", "Amber", "Belgium", 5),
+             Beer(7, "Brewdog", "Punk IPA", 5.6, "IPA", "Blond", "Scotland", 4.5),
+             Beer(8, "Westmalle", "Triple", 9.5, "Abbaye", "Blond", "Belgium", 5),
+             Beer(9, "Rince Cochon", "Blonde", 8.5, "Belgian Pale Ale", "Blond", "Belgium", 4.5),
+             Beer(10, "Hinano", "", 5, "Lager", "Blond", "Polynesia", 4),
+             Beer(11, "La Levrette", "Blonde", 5, "Lager", "Blond", "France", 4.5),
+             Beer(12, "La Fée Torchette", "Blonde", 6.5, "Lager", "Blond", "France", 4.5),
+             Beer(13, "La Trappe", "Quadrupel", 10, "Belgian Pale Ale", "Amber", "Belgium", 5),
+             Beer(14, "Kwak", "", 8.4, "Belgian Pale Ale", "Amber", "Belgium", 5.5),
+             Beer(15, "Tripel Karmeliet", "", 8.4, "Belgian Pale Ale", "Blond", "Belgium", 5.3),
+             Beer(16, "Omnipollo", "Fatamorgana", 8, "IPA", "Amber", "Sweden", 6.5),
+             Beer(17, "Barbar", "Miel", 8, "Belgian Pale Ale", "Blond", "Belgium", 6.4),
+             Beer(18, "Iron Maiden", "Trooper", 4.7, "Extra Special Bitter", "Blond", "England", 4.6),
+             Beer(19, "Gulden", "Draak", 10.7, "Belgian Dark Ale", "Brown", "Belgium", 5.8),
+             Beer(20, "Delirium", "Tremens", 8.5, "Belgian Pale Ale", "Blond", "Belgium", 5.4),
+             Beer(21, "Chimay", "Bleue", 9, "Belgian Dark Ale", "Brown", "Belgium", 5.4),
+             Beer(22, "Angelus", "Blonde", 7, "Belgian Pale Ale", "Blond", "France", 4.8),
+             Beer(23, "Pietra", "", 6, "Lager", "Blond", "France", 3.8),
+             Beer(24, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond", "Scotland", 3.8),
+             Beer(25, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond", "Belgium", 4.6),
+             Beer(26, "Blue Moon", "White Ale", 5.4, "White", "White", "USA", 4.5),
+             Beer(27, "Rousse du Mont Blanc", "", 6.5, "Amber", "Amber", "France", 3.6)
              ]
     return beers
 
@@ -315,11 +321,12 @@ def generateCustomers():
         lastDate = Customer.generateLastDate()
         averageUptakesPerDay = Customer.generateAverageUptakes()
         habits = Customer.generateHabits()
+        amount = Customer.generateAmount()
 
         ponderationDays = Customer.generatePonderations()
 
         customers.append(
-            Customer(i, name[0], name[1], firstDate, lastDate, averageUptakesPerDay, habits, ponderationDays)
+            Customer(i, name[0], name[1], firstDate, lastDate, averageUptakesPerDay, habits, ponderationDays, amount)
         )
     return customers
 
