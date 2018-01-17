@@ -40,8 +40,12 @@ new Vue({
             console.log("Websocket connection opened.");
         };
         this.ws.onmessage = function (event) {
-            self.customer = JSON.parse(event.data);
-            console.log("New customer connected : ");
+            let jsonObject = JSON.parse(event.data);
+            self.customer = jsonObject.customer;
+            self.beers = jsonObject.beers;
+            for (let beer of self.beers) {
+                beer.isSelected = false;
+            }
             console.log(self.customer.firstname + " " + self.customer.lastname);
         };
         this.ws.onerror = function (event) {
@@ -54,7 +58,7 @@ new Vue({
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
                 },
-                body: 'id=2'
+                body: 'id=1'
             })
             .then(function (data) {
                 console.log(data)
@@ -84,13 +88,18 @@ new Vue({
         orderNewBeer: function (beerId) {
             let self = this;
 
+            for (let beer of self.beers) {
+                beer.isSelected = false;
+            }
+            self.getBeerFromId(beerId).isSelected = true;
+
             console.log("app order: " + self.customer.id + " ; " + beerId);
 
             //update uptakes for this customer
-            this.customer.uptakes[self.customer.uptakes.length - 1].beersId.push(beerId);
+            //this.customer.uptakes[self.customer.uptakes.length - 1].beersId.push(beerId);
 
             //send data to the server
-            fetch("http://" + window.location.hostname + ":8092/drink",
+            fetch("http://" + window.location.hostname + ":8092/selectBeer",
                 {
                     mode: 'cors', method: 'POST',
                     headers: {

@@ -12,10 +12,10 @@ let beerslistitem = Vue.component(
         '    <beer-item is="beer-item" v-for="(beer, index) in beers"' +
         '               v-bind:index="index" \n' +
         '               v-bind:key="beer.id" \n' +
-        '               v-bind:beer="beer"> \n' +
+        '               v-bind:beer="beer" :showRank="showRank"> \n' +
         '    </beer-item> \n' +
         '</div> \n',
 
-        props: ['beers', 'index']
+        props: ['beers', 'index', 'showRank']
     }
 );

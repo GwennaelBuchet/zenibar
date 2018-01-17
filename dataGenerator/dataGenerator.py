@@ -17,6 +17,7 @@ class Beer:
         self.origin = origin
         self.rank = 0
         self.price = price
+        self.stock = math.ceil(random.random() * 10)
 
     def canMatch(self, conditions):
         for condition in conditions:

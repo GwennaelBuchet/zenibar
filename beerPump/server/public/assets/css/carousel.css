@@ -31,6 +31,9 @@ figcaption {
     content:""; box-shadow:0 0 20px rgba(0,0,0,.8);
 }
 
+.selectedBeer {
+    background-color: #ded9b3;
+}
 
 
 
@@ -74,8 +77,9 @@ figcaption {
 }
 
 .mark {
-    padding: 12px 0;
+    padding: 0 0 12px;
     background: none;
+    color: #555;
 }
 
 .block-text p {

@@ -12,6 +12,7 @@ console.log("BeerPump server adress: " + ip.address());
 let MAINSERVER_IP = "http://192.168.43.97:8090"; //http://"+ip.address()+":8090"; // "http://192.168.43.97:8090";
 
 let customer = null;
+let selectedBeerId = 0;
 let beers = [];
 
 let bodyParser = require('body-parser');
@@ -46,7 +47,8 @@ app.post("/connect", function (req, res) {
         .then(function (data) {
             customer = data;
             serverws.connections.forEach(function (conn) {
-                conn.sendText(JSON.stringify(customer));
+                //conn.sendText(JSON.stringify(customer));
+                conn.sendText(JSON.stringify({"customer": customer, "beers": beers}));
             })
         }).catch(function (error) {
         console.log('Request failed', error);
@@ -54,9 +56,18 @@ app.post("/connect", function (req, res) {
 
 });
 
-app.post("/drink", function (req, res) {
+app.post("/selectBeer", function (req, res) {
     let customerId = req.body.customerId;
-    let beerId = req.body.beerId;
+    selectedBeerId = req.body.beerId;
+
+    console.log("Beer selected for customer " + customerId + " : " + selectedBeerId);
+
+    res.send(selectedBeerId);
+});
+
+app.post("/drink", function (req, res) {
+    let customerId = customer.id; //req.body.customerId;
+    let beerId = selectedBeerId; // req.body.beerId;
 
     console.log("BeerPump order: " + customerId + " ; " + beerId);
 
@@ -67,14 +78,15 @@ app.post("/drink", function (req, res) {
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
             },
             body: 'customerId=' + customerId + "&beerId=" + beerId
-        }
-    )
+        })
         .then(status)
         .then(json)
         .then(function (data) {
-            customer = data;
+            customer = data.customer;
+            beers = data.beers;
             serverws.connections.forEach(function (conn) {
-                conn.sendText(JSON.stringify(customer));
+                conn.sendText(JSON.stringify({"customer": customer, "beers": beers}));
+                console.log(beers);
             })
         }).catch(function (error) {
         console.log('Request failed', error);
@@ -85,6 +97,15 @@ app.get("/beers", function (req, res) {
     res.send(beers);
 });
 
+let getBeer = function (id) {
+    for (let beer of beers) {
+        if (beer["id"] == id) {
+            return beer;
+        }
+    }
+
+    return null;
+};
 
 /**
  * Server itself

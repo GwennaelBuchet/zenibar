@@ -7,7 +7,7 @@ let ws = require("nodejs-websocket");
 
 // Bar data, with history, beers and costumers
 let bar = require("./../data/zenibar_history.json");
-let preferences = require("./../data/preferences_per_client");
+let stocks = require("./../data/stocks.json");
 
 
 let bodyParser = require('body-parser');
@@ -56,7 +56,15 @@ app.post("/drink", function (req, res) {
                 lu.beersId.push(beerId);
             }
 
-            res.send(customer);
+            let beer;
+            for (beer of bar.beers) {
+                if (beer["id"] == beerId) {
+                    customer.amount -= beer.price;
+                    beer.stock -= 1;
+                }
+            }
+
+            res.send({"customer":customer, "beers":bar.beers});
             break;
         }
     }
@@ -99,30 +107,22 @@ let getCustomer = function (id) {
     return null;
 };
 
-let readCustomersPreferences = function () {
-
-    /*for (let c = 0; c < 50; c++) {
-        let cp = preferences["" + c];
-        let customer = getCustomer(c);
-
-        customer.totalBeers = cp.total_beers;
-        customer.preferences = [];
-        customer.preferencesId = [];
-
-        for (let b = 1; b <= bar.beers.length; b++) {
-            if (cp[""+b] !== undefined) {
-                customer.preferences.push(
-                    {
-                        "beerId":b,
-                        "quantity":cp[""+b][0],
-                        "percent":(100 - cp[""+b][1]) / 100
-                    }
-                );
-                customer.preferencesId.push(b                );
-            }
+let getBeer = function (id) {
+    for (let beer of bar.beers) {
+        if (beer["id"] == id) {
+            return beer;
         }
-    }*/
+    }
 
+    return null;
+};
+
+
+let readStocks = function () {
+
+    for (let b = 0; b < bar.beers.length; b++) {
+        bar.beers[b].stock = stocks[b];
+    }
 }();
 
 /**

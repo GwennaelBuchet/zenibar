@@ -17,8 +17,9 @@ let customeritem = Vue.component(
 								</h1> \
 							</div> \
 							<div class="panel-footer panel-footer-landing"> \
-							<p><img :src="pictureURL(customer.firstname, customer.lastname)" class="gravatar" alt="" /> Texte à aligner</p>\
+							    <p><img :src="pictureURL(customer.firstname, customer.lastname)" class="gravatar" alt="" /> Texte à aligner</p>\
 							</div> \
+							<div>{{customer.amount}} € left</div>\
 						</div> \
 					</div> \
 				</div> \
