@@ -15,6 +15,7 @@ class Beer:
         self.style = style
         self.color = color
         self.origin = origin
+        self.rank = 0
 
     def canMatch(self, conditions):
         for condition in conditions:
@@ -237,12 +238,14 @@ class Bar:
         for beer in self.beers:
             if beer.canMatch(customer.habits):
                 customer.suitableBeers.append(beer)
+                customer.suitableBeers[len(customer.suitableBeers) -1].rank = 3 + math.ceil(random.random()*3)
 
     def addSuitableBeerToCustomers(self, beer):
         """ Try to find customers who can like this beer """
         for customer in self.customers:
             if beer.canMatch(customer.habits):
                 customer.suitableBeers.append(beer)
+                customer.suitableBeers[len(customer.suitableBeers) -1].rank = 3 + math.ceil(random.random()*3)
 
     def _try(self, o):
         try:
