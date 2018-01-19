@@ -40,7 +40,7 @@ let beeritem = Vue.component(
                 return "http://localhost:8090/pictures/beers/" + brand + "_" + model + ".jpg";
             },
 
-            updateComponent:function() {
+            updateComponent: function () {
                 this.$forceUpdate();
             },
 
@@ -48,11 +48,11 @@ let beeritem = Vue.component(
                 console.log("history order: " + this.beer.id);
 
                 this.$parent.$parent.$parent.orderNewBeer(this.beer.id);
-
-                this.updateComponent();
-
-                setInterval(this.updateComponent, 500);
             }
+        },
+
+        mounted: function () {
+            setInterval(this.updateComponent, 500);
         }
     }
 );

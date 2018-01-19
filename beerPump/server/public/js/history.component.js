@@ -92,10 +92,11 @@ let historyitem = Vue.component(
             orderBeer: function (event) {
                 console.log("history order: " + this.customer.id + " ; " + this.lastBeer.id);
                 this.$parent.orderNewBeer(this.lastBeer.id);
-                this.updateComponent();
-
-                setInterval(this.updateComponent, 500);
             }
+        },
+
+        mounted: function () {
+            setInterval(this.updateComponent, 500);
         }
     }
 )
