@@ -103,6 +103,13 @@ new Vue({
                 }
             }
 
+            for (let beer of self.customer.suitableBeers) {
+                beer.isSelected = false;
+                if (beer.id === beerId) {
+                    beer.isSelected = true;
+                }
+            }
+
             //send data to the server
             fetch("http://" + window.location.hostname + ":8092/selectBeer",
                 {

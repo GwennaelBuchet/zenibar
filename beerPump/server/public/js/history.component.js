@@ -38,7 +38,7 @@ let historyitem = Vue.component(
                                     </div> \
                                     <div class="panel-footer panel-footer-landing">\
                                         <h1 class="panel-title panel-title-landing" > \
-                                            <span class="btn btn-price" style="font-size:1.1em" v-on:click="orderBeer">Select</span> \
+                                            <span class="btn btn-price" style="font-size:1.1em" v-on:click="orderBeer" v-bind:class="{selectedBeer:lastBeer.isSelected === true}">{{lastBeer.isSelected?"Selected":"Select"}}</span> \
                                             <span class="badge" :class="{\'badge-secondary\':lastBeer.stock>=3, \'badge-danger\':lastBeer.stock<3}">{{lastBeer.stock}}</span>\
                                         </h1> \
                                     </div>\
@@ -85,9 +85,16 @@ let historyitem = Vue.component(
                 return null;
             },
 
+            updateComponent:function() {
+                this.$forceUpdate();
+            },
+
             orderBeer: function (event) {
                 console.log("history order: " + this.customer.id + " ; " + this.lastBeer.id);
                 this.$parent.orderNewBeer(this.lastBeer.id);
+                this.updateComponent();
+
+                setInterval(this.updateComponent, 1000);
             }
         }
     }
