@@ -56,6 +56,12 @@ app.post("/drink", function (req, res) {
                 lu.beersId.push(beerId);
             }
 
+            for (let b of customer.suitableBeers) {
+                if (b["id"] == beerId) {
+                    b.stock -= 1;
+                }
+            }
+
             let beer;
             for (beer of bar.beers) {
                 if (beer["id"] == beerId) {
@@ -64,7 +70,7 @@ app.post("/drink", function (req, res) {
                 }
             }
 
-            res.send({"customer":customer, "beers":bar.beers});
+            res.send({"customer": customer, "beers": bar.beers});
             break;
         }
     }
@@ -120,9 +126,20 @@ let getBeer = function (id) {
 
 let readStocks = function () {
 
-    for (let b = 0; b < bar.beers.length; b++) {
-        bar.beers[b].stock = stocks[b];
+    let a, b, c;
+    for (a = 0; a < bar.beers.length; a++) {
+        let i = bar.beers[a].id - 1;
+        bar.beers[a].stock = stocks[i];
     }
+
+    for (c of bar.customers) {
+        for (b = 0; b < c.suitableBeers.length; b++) {
+            let i = c.suitableBeers[b].id - 1;
+            c.suitableBeers[b].stock = stocks[i];
+            c.suitableBeers[b].isSelected = false;
+        }
+    }
+    console.log("Stocks updated");
 }();
 
 /**
