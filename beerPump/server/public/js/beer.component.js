@@ -22,7 +22,7 @@ let beeritem = Vue.component(
         '        <p>{{beer.strongness}}° | {{beer.style}}</p>\n' +
         '        <p>{{beer.price}} €</p>\n' +
         '    <h1 class="panel-title panel-title-landing"> \n' +
-        '        <span class="btn btn-price" style="font-size: 1.1em" v-on:click="orderBeer()" v-bind:class="{selectedBeer:beer.isSelected === true}">{{beer.isSelected?"Selected":"Select"}}</span> \n' +
+        '        <span class="btn btn-price" style="font-size: 1.1em" v-on:click="orderBeer()" v-bind:class="{selectedBeer:beer.isSelected === true}">{{beer.isSelected?"Sélectionné":"Sélectionner"}}</span> \n' +
         '        <span class="badge" :class="{\'badge-secondary\':beer.stock>=3, \'badge-danger\':beer.stock<3}">{{beer.stock}}</span>\n' +
         '    </h1>' +
         '        <ins class="ab zmin sprite sprite-i-triangle block"></ins>\n' +
@@ -51,7 +51,7 @@ let beeritem = Vue.component(
 
                 this.updateComponent();
 
-                setInterval(this.updateComponent, 1000);
+                setInterval(this.updateComponent, 500);
             }
         }
     }

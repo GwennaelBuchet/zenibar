@@ -34,6 +34,8 @@ app.post("/drink", function (req, res) {
     for (let customer of bar.customers) {
         if (customer["id"] == customerId) {
 
+            customer.nbBeers += 1;
+
             let today = new Date();
             let d = today.getDate();
             let m = today.getMonth();
@@ -133,6 +135,7 @@ let readStocks = function () {
     }
 
     for (c of bar.customers) {
+        c.nbBeers = 0;
         for (b = 0; b < c.suitableBeers.length; b++) {
             let i = c.suitableBeers[b].id - 1;
             c.suitableBeers[b].stock = stocks[i];

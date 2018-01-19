@@ -43,10 +43,11 @@ new Vue({
             let jsonObject = JSON.parse(event.data);
             self.customer = jsonObject.customer;
             self.beers = jsonObject.beers;
-            for (let beer of self.beers) {
-                beer.isSelected = false;
+
+            if (self.customer.nbBeers >= 4) {
+                console.log("Would you like to order an UBER ?");
+                openNav();
             }
-            console.log(self.customer.firstname + " " + self.customer.lastname);
         };
         this.ws.onerror = function (event) {
             console.log("Websocket connection error : " + event);

@@ -9,7 +9,7 @@ let headeritem = Vue.component(
 		<header id="header">\n' +
         '        <img :src="pictureURL(customer.firstname, customer.lastname)" class="gravatar"> \n' +
         '        <h1>Hello {{customer.firstname}} {{customer.lastname}} !</h1>\n' +
-        '        <h2>Welcome to Zenibar !</h2>\n' +
+        '        <h2>Bienvenue au Zenibar !</h2>\n' +
         '        <ul class="icons">\n' +
         '            <li><a href="#" class="icon style2 fa-beer"><span class="label">Beer</span></a></li>\n' +
         '            <li><a href="#" class="icon fa-long-arrow-right"><span class="label"></span></a></li>\n' +

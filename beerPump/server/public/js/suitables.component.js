@@ -8,7 +8,7 @@ let suitablesitem = Vue.component(
         template: '<div>\n' +
         '            <div class="container">\n' +
         '                <div class="row">\n' +
-        '                    <h1>You should like:</h1>\n' +
+        '                    <h1>Vous devriez aimer :</h1>\n' +
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="carousel-reviews broun-block">\n' +

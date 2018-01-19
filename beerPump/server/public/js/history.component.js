@@ -7,14 +7,14 @@ let historyitem = Vue.component(
     {
         template: '\
 		<div class="container"> \
-			<h1>Account: {{ (customer.amount).toFixed(2) }}€ left</h1>\
+			<h1>Crédits : {{ (customer.amount).toFixed(2) }}€ restant</h1>\
 			<div class="row text-center"> \
 				<div class="col-md-12" style="margin-top: 5px;"> \
 					<div class="pricing-table"> \
 						<div class="panel panel-primary" style="border: none;"> \
 							<div class="controle-header panel-heading panel-heading-landing"> \
 								<h1 class="panel-title panel-title-landing" > \
-									Your last order \
+									Dernière commande \
 								</h1> \
 							</div> \
 							<div class="panel-body panel-body-landing parent-header"> \
@@ -32,13 +32,13 @@ let historyitem = Vue.component(
                                         </span>\
                                     </div>\
                                             <div class="lastbeer-desc">{{lastBeer.style}}</div>\
-                                            <div class="lastbeer-desc">Color: {{lastBeer.color}}</div>\
-                                            <div class="lastbeer-desc">Origin: {{lastBeer.origin}}</div>\
+                                            <div class="lastbeer-desc">Couleur : {{lastBeer.color}}</div>\
+                                            <div class="lastbeer-desc">Origine : {{lastBeer.origin}}</div>\
                                         </div>\
                                     </div> \
                                     <div class="panel-footer panel-footer-landing">\
                                         <h1 class="panel-title panel-title-landing" > \
-                                            <span class="btn btn-price" style="font-size:1.1em" v-on:click="orderBeer" v-bind:class="{selectedBeer:lastBeer.isSelected === true}">{{lastBeer.isSelected?"Selected":"Select"}}</span> \
+                                            <span class="btn btn-price" style="font-size:1.1em" v-on:click="orderBeer" v-bind:class="{selectedBeer:lastBeer.isSelected === true}">{{lastBeer.isSelected?"Sélectionné":"Selectionner"}}</span> \
                                             <span class="badge" :class="{\'badge-secondary\':lastBeer.stock>=3, \'badge-danger\':lastBeer.stock<3}">{{lastBeer.stock}}</span>\
                                         </h1> \
                                     </div>\
@@ -94,7 +94,7 @@ let historyitem = Vue.component(
                 this.$parent.orderNewBeer(this.lastBeer.id);
                 this.updateComponent();
 
-                setInterval(this.updateComponent, 1000);
+                setInterval(this.updateComponent, 500);
             }
         }
     }

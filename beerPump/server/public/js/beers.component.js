@@ -8,7 +8,7 @@ let beersitem = Vue.component(
         template: '<div>\n' +
         '            <div class="container">\n' +
         '                <div class="row">\n' +
-        '                    <h1>All beers:</h1>\n' +
+        '                    <h1>Toutes les bières :</h1>\n' +
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="carousel-reviews broun-block">\n' +

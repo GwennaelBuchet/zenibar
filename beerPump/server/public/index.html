@@ -6,7 +6,7 @@
 -->
 <html>
 <head>
-    <title>Welcome to Zenibar !</title>
+    <title>Bienvenue au Zenibar !</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -21,6 +21,16 @@
 
 <!-- Wrapper -->
 <div id="wrapper">
+
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="overlay-content">
+            <strong><a href="http://www.uber.com">Voulez vous commander un Uber ?</a></strong>
+            <div></div>
+            <div></div>
+            <a href="http://www.alcooliques-anonymes.fr/">Alcooliques Anonymes</a>
+        </div>
+    </div>
 
     <div class="parent-header">
         <!-- Header -->
@@ -58,6 +68,16 @@
     </footer>
 
 </div>
+
+<script>
+    function openNav() {
+        document.getElementById("myNav").style.width = "100%";
+    }
+
+    function closeNav() {
+        document.getElementById("myNav").style.width = "0%";
+    }
+</script>
 
 <!-- Scripts -->
 <script src="assets/js/jquery.min.js"></script>
