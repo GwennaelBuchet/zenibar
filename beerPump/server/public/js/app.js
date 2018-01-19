@@ -85,18 +85,23 @@ new Vue({
             return this.customer.uptakes[this.customer.uptakes.length - 1];
         },
 
-        orderNewBeer: function (beerId) {
-            let self = this;
-
+        deselectAllBeers:function() {
             for (let beer of self.beers) {
                 beer.isSelected = false;
             }
-            self.getBeerFromId(beerId).isSelected = true;
+        },
+
+        orderNewBeer: function (beerId) {
+            let self = this;
 
             console.log("app order: " + self.customer.id + " ; " + beerId);
 
-            //update uptakes for this customer
-            //this.customer.uptakes[self.customer.uptakes.length - 1].beersId.push(beerId);
+            for (let beer of self.beers) {
+                beer.isSelected = false;
+                if (beer.id === beerId) {
+                    beer.isSelected = true;
+                }
+            }
 
             //send data to the server
             fetch("http://" + window.location.hostname + ":8092/selectBeer",
@@ -108,7 +113,8 @@ new Vue({
                     body: 'customerId=' + self.customer.id + "&beerId=" + beerId
                 })
                 .then(function (data) {
-                    console.log(data)
+                    console.log(data);
+                    self.$forceUpdate();
                 })
                 .catch(function (error) {
                     console.log("Cannot connect with order a new beer :'( ");
