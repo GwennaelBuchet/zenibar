@@ -283,10 +283,10 @@ class Weather:
 
 
 def generateBeers():
-    beers = [Beer(1, "Kasteel", "Cuvée du Chateau", 11, "Belgian Pale Ale", "Brown", "Belgium", 6),
-             Beer(2, "Rochefort", "10", 11.3, "Abbaye", "Brown", "Belgium", 6),
+    beers = [Beer(1, "Kasteel", "Triple", 11, "Belgian Pale Ale", "Blonde", "Belgium", 6),
+             Beer(2, "La Raoul", "", 6.5, "Lager", "Blond", "France", 3.6),
              Beer(3, "Rochefort", "8", 9.2, "Abbaye", "Brown", "Belgium", 5.5),
-             Beer(4, "Saint Bernardus", "Abt 12", 10, "Belgian Pale Ale", "Brown", "Belgium", 5),
+             Beer(4, "Bière du Corbeau", "", 9, "Belgian Pale Ale", "Blond", "Belgium", 5),
              Beer(5, "Cuvée des Trolls", "Blonde", 7, "Belgian Pale Ale", "Blond", "Belgium", 4.5),
              Beer(6, "Orval", "Blonde", 7, "Abbaye", "Amber", "Belgium", 5),
              Beer(7, "Brewdog", "Punk IPA", 5.6, "IPA", "Blond", "Scotland", 4.5),
@@ -309,7 +309,9 @@ def generateBeers():
              Beer(24, "Brewdog", "Nanny State", 0.5, "Alcool Free", "Blond", "Scotland", 3.8),
              Beer(25, "La Chouffe", "Blonde", 8, "Belgian Pale Ale", "Blond", "Belgium", 4.6),
              Beer(26, "Blue Moon", "White Ale", 5.4, "White", "White", "USA", 4.5),
-             Beer(27, "Rousse du Mont Blanc", "", 6.5, "Amber", "Amber", "France", 3.6)
+             Beer(27, "Rousse du Mont Blanc", "", 6.5, "Amber", "Amber", "France", 3.6),
+             Beer(28, "Rochefort", "10", 11.3, "Abbaye", "Brown", "Belgium", 6),
+             Beer(29, "Saint Bernardus", "Abt 12", 10, "Belgian Pale Ale", "Brown", "Belgium", 5)
              ]
     return beers
 
