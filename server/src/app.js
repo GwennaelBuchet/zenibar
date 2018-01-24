@@ -157,9 +157,10 @@ let readStocks = function () {
     console.log("Stocks updated");
 }();
 
-let computeTastesForCustomer = function (customer) {
+let computeTastesAndHistoryForCustomer = function (customer) {
 
     let habits = {};
+    let history = [];
     let nbUptakes = 0;
 
     for (let u of customer.uptakes) {
@@ -178,9 +179,11 @@ let computeTastesForCustomer = function (customer) {
     // now compute percentages for each beer consumed
     for (let b in habits) {
         habits["" + b][1] = habits["" + b][0] * 100 / nbUptakes;
+        history.push(getBeer(b));
     }
 
     customer.habits = habits;
+    customer.history = history;
 
     let strongnessMin = 100;
     let strongnessMax = 0;
@@ -234,7 +237,7 @@ let computeSuitableBeersForCustomer = function (customer) {
 let computeAllTastes = function () {
 
     for (let c of bar.customers) {
-        computeTastesForCustomer(c);
+        computeTastesAndHistoryForCustomer(c);
         computeSuitableBeersForCustomer(c);
     }
 
