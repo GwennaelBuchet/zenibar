@@ -8,6 +8,7 @@ let ws = require("nodejs-websocket");
 // Bar data, with history, beers and costumers
 let bar = require("./../data/zenibar_history.json");
 let stocks = require("./../data/stocks.json");
+let preferences = require("./../data/preferences_per_client");
 
 
 let bodyParser = require('body-parser');
@@ -105,6 +106,18 @@ app.get("/beers", function (req, res) {
     res.send(bar.beers);
 });
 
+app.get("/stocknbeers", function (req, res) {
+
+    let snb = {};
+    for (let i = 0; i < stocks.length; i++) {
+        let b = getBeer(i + 1);
+
+        snb[b.id + " " + b.brand + " " + b.model] = stocks[i];
+    }
+
+    res.send(snb);
+});
+
 let getCustomer = function (id) {
     for (let customer of bar.customers) {
         if (customer["id"] == id) {
@@ -125,7 +138,6 @@ let getBeer = function (id) {
     return null;
 };
 
-
 let readStocks = function () {
 
     let a, b, c;
@@ -143,6 +155,91 @@ let readStocks = function () {
         }
     }
     console.log("Stocks updated");
+}();
+
+let computeTastesForCustomer = function (customer) {
+
+    let habits = {};
+    let nbUptakes = 0;
+
+    for (let u of customer.uptakes) {
+        for (let b of u.beersId) {
+            nbUptakes++;
+
+            if (!habits.hasOwnProperty("" + b)) {
+                habits["" + b] = [0, 0];
+            }
+
+            let h = habits["" + b];
+            h[0]++;
+        }
+    }
+
+    // now compute percentages for each beer consumed
+    for (let b in habits) {
+        habits["" + b][1] = habits["" + b][0] * 100 / nbUptakes;
+    }
+
+    customer.habits = habits;
+
+    let strongnessMin = 100;
+    let strongnessMax = 0;
+    let styles = [];
+    let colors = [];
+    let origins = [];
+
+    for (let b of bar.beers) {
+        let bid = b.id;
+        //unfortunately, the file is not very JSON compliant and keys are id of beers :/
+        //if (habits[bid] !== null && habits[bid] !== undefined)
+        if (habits.hasOwnProperty("" + bid)) {
+
+            let percent = habits[bid][1];
+            //only take care of beers consumed often (more than 12% of time)
+            if (percent >= 12) {
+                if (b.strongness < strongnessMin) strongnessMin = b.strongness;
+                if (b.strongness > strongnessMax) strongnessMax = b.strongness;
+
+                if (styles.indexOf(b.style) === -1) styles.push(b.style);
+                if (colors.indexOf(b.color) === -1) colors.push(b.color);
+                if (origins.indexOf(b.origin) === -1) origins.push(b.origin);
+            }
+        }
+    }
+
+    customer.preferences = {};
+    customer.preferences.strongnessMin = strongnessMin;
+    customer.preferences.strongnessMax = strongnessMax;
+    customer.preferences.styles = styles;
+    customer.preferences.origins = origins;
+    customer.preferences.colors = colors;
+};
+
+let computeSuitableBeersForCustomer = function (customer) {
+
+    customer.suitableBeers = [];
+    let p = customer.preferences;
+    for (let beer of bar.beers) {
+        if (beer.strongness >= p.strongnessMin
+            && beer.strongness <= p.strongnessMax
+            && p.styles.indexOf(beer.style) >= 0
+            && p.origins.indexOf(beer.origin) >= 0
+            && p.colors.indexOf(beer.color) >= 0) {
+            customer.suitableBeers.push(beer);
+        }
+
+    }
+};
+
+let computeAllTastes = function () {
+
+    for (let c of bar.customers) {
+        computeTastesForCustomer(c);
+        computeSuitableBeersForCustomer(c);
+    }
+
+    console.log("Preferences updated");
+
 }();
 
 /**
