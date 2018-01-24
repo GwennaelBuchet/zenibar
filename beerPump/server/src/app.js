@@ -9,7 +9,7 @@ let fetch = require('node-fetch');
 let ip = require("ip");
 console.log("BeerPump server adress: " + ip.address());
 
-let MAINSERVER_IP = "http://192.168.43.97:8090"; //http://"+ip.address()+":8090"; // "http://192.168.43.97:8090";
+let MAINSERVER_IP = "http://localhost:8090"; //http://"+ip.address()+":8090"; // "http://192.168.43.97:8090";
 
 let customer = null;
 let selectedBeerId = 0;
